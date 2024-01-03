@@ -1,6 +1,10 @@
 from dataclasses import dataclass
+
+from models.cafeteria_item import CafeteriaItem
+
+
 @dataclass
 class Cart:
-    items: list
-    quantity: int
-    total_price: float
+    Items: list[CafeteriaItem]
+    TotalQuantity: int
+    TotalPrice: float
