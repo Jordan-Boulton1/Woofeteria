@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from models.cafeteria_item import CafeteriaItem
-from models.cart import Cart
+from entities.cafeteria_item import CafeteriaItem
+from entities.cart import Cart
 
 
 @dataclass

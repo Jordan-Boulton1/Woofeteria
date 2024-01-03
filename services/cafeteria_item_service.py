@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from models.cafeteria_item import CafeteriaItem
+from entities.cafeteria_item import CafeteriaItem
 
 
 class CafeteriaItemService:
