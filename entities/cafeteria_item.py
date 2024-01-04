@@ -4,7 +4,7 @@ class CafeteriaItem:
     Id: int
     Name: str
     Price: float
-    Quantity: int
+    Stock: int
 
 
 
