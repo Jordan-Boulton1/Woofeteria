@@ -16,6 +16,18 @@ class CafeteriaItemService:
     def get_cafeteria_menu(self):
         return self.cafeteria_items
 
+    def subtract_from_stock(self, ordered_item: CafeteriaItem, menu_list: list[CafeteriaItem], ordered_amount: int):
+        for cafeteria_item in menu_list:
+            if ordered_item.Id == cafeteria_item.Id:
+                cafeteria_item.Stock -= ordered_amount
+        self.cafeteria_items = menu_list
+
+    def add_to_stock(self, ordered_item: CafeteriaItem, menu_list: list[CafeteriaItem], ordered_amount: int):
+        for cafeteria_item in menu_list:
+            if ordered_item.Id == cafeteria_item.Id:
+                cafeteria_item.Stock += ordered_amount
+        self.cafeteria_items = menu_list
+
     def __populate_cafeteria_menu(self):
         menu = [
             CafeteriaItem(1, "Woofin", 2.50, 10),
