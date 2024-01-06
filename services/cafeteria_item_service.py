@@ -11,7 +11,7 @@ class CafeteriaItemService:
 
     def print_cafeteria_menu(self):
         for item in self.cafeteria_items:
-            print(f"{item.Id}. {item.Name} - £{self.price_converter.format_price(item.Price)} | Stock - {item.Stock}")
+            print(f"{item.Id}. {item.Name} - £{self.price_converter.format_price(item.Price)} | Stock - x{item.Stock}")
 
     def get_cafeteria_menu(self):
         return self.cafeteria_items

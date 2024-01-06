@@ -26,7 +26,10 @@ class UserflowService:
         cart_items = self.__handle_order()
         cart = self.cart_service.add_to_cart(cart_items)
         user_input = input("Are you finished with your order? (Y/N)")
-        self.__continue_flow(user_input, cart)
+        if user_input.capitalize() == "Y":
+            self.__complete_user_flow(user_input, cart)
+        elif user_input.capitalize() == "N":
+            self.__continue_flow(user_input, cart)
 
     def __show_menu(self):
 
@@ -36,16 +39,24 @@ class UserflowService:
     def __continue_flow(self, user_input: str, cart: Cart):
         while True:
             if user_input.capitalize() == "Y":
+                self.__complete_user_flow(user_input, cart)
                 break
             print("Your current order: ")
             self.cart_service.print_cart(cart)
             user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove)")
             if user_input.capitalize() == "Add".capitalize():
                 self.__add_to_cart(user_input, cart)
+                user_input = input("Are you finished with your order? (Y/N)")
             elif user_input.capitalize() == "Remove".capitalize():
                 self.__remove_from_cart(cart)
-            else:
                 user_input = input("Are you finished with your order? (Y/N)")
+
+    def __complete_user_flow(self, user_input: str, cart: Cart):
+        if user_input.capitalize() == "Y":
+            print("That's great, your total price is £", cart.TotalPrice)
+            input("Please enter the amount on screen to complete your purchase.")
+        elif user_input.capitalize() == "N":
+            self.__continue_flow(user_input, cart)
 
     def __add_to_cart(self, user_input: str, cart: Cart):
         if user_input.capitalize() == "Add".capitalize():
