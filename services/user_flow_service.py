@@ -16,6 +16,8 @@ class UserflowService:
         self.cart_service = CartService()
         self.user_input_helper = UserInputHelper()
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
+        self.unique_set = set()
+        self.cart_result = []
 
     def start_cafeteria_flow(self):
         print(f"{Icon.DogIcon.value} Welcome to Storm's Woofeteria. {Icon.DogIcon.value}\n "
@@ -45,7 +47,7 @@ class UserflowService:
         if user_input.capitalize() == "Add".capitalize():
             self.__show_menu()
             cart_items = self.__handle_order()
-            cart.Items.extend(cart_items)
+            cart.Items = cart_items
             cart = self.cart_service.update_cart(cart, cart.Items)
             self.cart_service.print_cart(cart)
 
@@ -54,19 +56,23 @@ class UserflowService:
         user_input = input("Which item(s) would you like to remove?\n "
                            "If you wish to remove more than one item please separate each item number by comma.")
 
-
     def __handle_order(self):
         ordered_items = self.__order_items(self.menu)
         return self.__subtract_stock(ordered_items)
 
     def __subtract_stock(self, cart_items: list[CafeteriaItem]):
-        menu_list_copy = copy.deepcopy(self.menu)
+        menu_list_copy = copy.deepcopy(self.cafeteria_item_service.get_cafeteria_menu())
         for item in cart_items:
             user_input = input(f"How many {item.Name} would you like to order?")
             user_input = int(user_input)
-            item.Stock = user_input
+            if item.Id not in self.unique_set:
+                self.unique_set.add(item.Id)
+                item.Stock = user_input
+                self.cart_result.append(item)
+            else:
+                item.Stock += user_input
             self.cafeteria_item_service.subtract_from_stock(item, menu_list_copy, user_input)
-        return cart_items
+        return self.cart_result
 
     def __add_stock(self, cart_items: list[CafeteriaItem]):
         menu_list_copy = copy.deepcopy(self.menu)
