@@ -43,7 +43,7 @@ class UserflowService:
             if user_input.capitalize() == "Add".capitalize():
                 self.__add_to_cart(user_input, cart)
             elif user_input.capitalize() == "Remove".capitalize():
-                self.__remove_from_cart(user_input, cart)
+                self.__remove_from_cart(cart)
             else:
                 user_input = input("Are you finished with your order? (Y/N)")
 
@@ -54,8 +54,7 @@ class UserflowService:
             cart.Items = cart_items
             self.cart_service.update_cart(cart, cart.Items)
 
-    def __remove_from_cart(self, user_input: str, cart: Cart):
-        self.cart_service.print_cart(cart)
+    def __remove_from_cart(self, cart: Cart):
         user_input = input("Which item(s) would you like to remove?\n "
                            "If you wish to remove more than one item please separate each item number by comma.")
         item_ids = self.user_input_helper.create_array_from_user_input(user_input)
@@ -83,15 +82,17 @@ class UserflowService:
 
     def __add_stock(self, cart_items: list[CafeteriaItem]):
         menu_list_copy = copy.deepcopy(self.cafeteria_item_service.get_cafeteria_menu())
+        cart_items_updated = []
         for item in cart_items:
             user_input = input(f"How many {item.Name} would you like to remove?")
             user_input = int(user_input)
             if item.Stock == 1:
-                cart_items.pop(cart_items.index(item))
+                continue
             else:
                 item.Stock -= user_input
+                cart_items_updated.append(item)
             self.cafeteria_item_service.add_to_stock(item, menu_list_copy, user_input)
-        return cart_items
+        return cart_items_updated
 
     def __order_items(self, menu_items: list[CafeteriaItem]):
         user_input = input(
