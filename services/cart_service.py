@@ -29,7 +29,7 @@ class CartService:
         print(f"Total Quantity: {cart.TotalQuantity}")
         print(f"Total Price: £{self.price_converter.format_price(cart.TotalPrice)}")
         for item in cart.Items:
-            print(f"{item.Id}. {item.Name} - £{self.price_converter.format_price(item.Price)}")
+            print(f"{item.Id}. {item.Name} - £{self.price_converter.format_price(item.Price)} - x{item.Stock}")
 
 
     def __calculate_total_quantity(self, selected_items: list[CafeteriaItem]):
