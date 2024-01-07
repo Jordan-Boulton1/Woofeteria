@@ -5,7 +5,7 @@ from entities.cafeteria_item import CafeteriaItem
 from entities.cart import Cart
 from infrastructure.enums.enum_icon import Icon
 from infrastructure.helpers.price_converter import PriceConverter
-from infrastructure.helpers.user_input_helper import UserInputHelper
+from infrastructure.validators.user_input_validator import UserInputValidator
 from services.cafeteria_item_service import CafeteriaItemService
 from services.cart_service import CartService
 
@@ -16,7 +16,6 @@ class UserflowService:
         self.cafeteria_item_service = CafeteriaItemService()
         self.cart_service = CartService()
         self.price_converter = PriceConverter()
-        self.user_input_helper = UserInputHelper()
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         self.unique_set = set()
         self.cart_result = []
@@ -30,7 +29,7 @@ class UserflowService:
         while True:
             user_input = input("Are you finished with your order? (Y/N)")
             if user_input.capitalize() == "Y":
-                self.__complete_user_flow(user_input, cart)
+                self.__complete_user_flow(cart)
                 break
             elif user_input.capitalize() == "N":
                 self.__continue_flow(user_input, cart)
@@ -39,49 +38,51 @@ class UserflowService:
                 print("The input entered is not valid. Please try using (Y/N)")
 
     def __show_menu(self):
-
         print("Food")
         self.cafeteria_item_service.print_cafeteria_menu()
 
     def __continue_flow(self, user_input: str, cart: Cart):
         while True:
             if user_input.capitalize() == "Y":
-                self.__complete_user_flow(user_input, cart)
+                self.__complete_user_flow(cart)
                 break
             print("Your current order: ")
             self.cart_service.print_cart(cart)
-            while True:
-                user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove)")
-                if user_input.capitalize() == "Add".capitalize():
-                    self.__add_to_cart(user_input, cart)
-                    user_input = input("Are you finished with your order? (Y/N)")
-                    if user_input.capitalize() == "Y":
-                        break
-                    elif user_input.capitalize() == "N":
-                        self.__continue_flow(user_input, cart)
-                        break
-                    else:
-                        print("The input entered is not valid. Please try using (Y/N)")
-                elif user_input.capitalize() == "Remove".capitalize():
-                    self.__remove_from_cart(cart)
-                    user_input = input("Are you finished with your order? (Y/N)")
-                    if user_input.capitalize() == "Y":
-                        break
-                    elif user_input.capitalize() == "N":
-                        self.__continue_flow(user_input, cart)
-                        break
-                    else:
-                        print("The input entered is not valid. Please try using (Y/N)")
+            user_input = self.__handle_continue_flow(cart)
+
+    def __handle_continue_flow(self, cart):
+        while True:
+            user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove)")
+            if user_input.capitalize() == "Add".capitalize():
+                self.__add_to_cart(cart)
+                user_input = input("Are you finished with your order? (Y/N)")
+                if user_input.capitalize() == "Y":
+                    break
+                elif user_input.capitalize() == "N":
+                    self.__continue_flow(user_input, cart)
                     break
                 else:
-                    print("The input entered is not valid. Please try using (Add/Remove)")
+                    print("The input entered is not valid. Please try using (Y/N)")
+            elif user_input.capitalize() == "Remove".capitalize():
+                self.__remove_from_cart(cart)
+                user_input = input("Are you finished with your order? (Y/N)")
+                if user_input.capitalize() == "Y":
+                    break
+                elif user_input.capitalize() == "N":
+                    self.__continue_flow(user_input, cart)
+                    break
+                else:
+                    print("The input entered is not valid. Please try using (Y/N)")
+            else:
+                print("The input entered is not valid. Please try using (Add/Remove)")
+        return user_input
 
-    def __complete_user_flow(self, user_input: str, cart: Cart):
+    def __complete_user_flow(self, cart: Cart):
         while True:
-            formatted_price =  self.price_converter.format_price(cart.TotalPrice)
+            formatted_price = self.price_converter.format_price(cart.TotalPrice)
             print("That's great, your total price is £", formatted_price)
             user_input = input("Please enter the amount on screen to complete your purchase.")
-            is_user_input_valid = self.user_input_helper.validate_user_input_is_a_decimal(user_input)
+            is_user_input_valid = UserInputValidator.validate_user_input_is_a_decimal(user_input)
             if not is_user_input_valid:
                 print("Please enter the expected price")
             elif formatted_price != user_input:
@@ -90,24 +91,15 @@ class UserflowService:
                 print("Thank you, have a woofin day")
                 break
 
-    def __add_to_cart(self, user_input: str, cart: Cart):
-        if user_input.capitalize() == "Add".capitalize():
-            self.__show_menu()
-            cart_items = self.__handle_order()
-            cart.Items = cart_items
-            self.cart_service.update_cart(cart, cart.Items)
+    def __add_to_cart(self, cart: Cart):
+        self.__show_menu()
+        cart_items = self.__handle_order()
+        cart.Items = cart_items
+        self.cart_service.update_cart(cart, cart.Items)
 
     def __remove_from_cart(self, cart: Cart):
-        while True:
-            user_input = input("Which item(s) would you like to remove?\n "
-                               "If you wish to remove more than one item please separate each item number by comma.")
-            is_user_input_valid = self.user_input_helper.validate_user_input_is_comma_separated(user_input,
-                                                                                                len(cart.Items))
-            if not is_user_input_valid:
-                print("The value you entered is invalid, please try again.")
-            else:
-                break
-        item_ids = self.user_input_helper.create_array_from_user_input(user_input)
+        user_input = UserInputValidator.validate_input_before_parsing(cart, True)
+        item_ids = UserInputValidator.create_array_from_user_input(user_input)
         cart_items = [item for item in cart.Items if item.Id in item_ids]
         cart.Items = self.__add_stock(cart_items)
         self.cart_service.update_cart(cart, cart.Items)
@@ -119,16 +111,8 @@ class UserflowService:
     def __subtract_stock(self, cart_items: list[CafeteriaItem]):
         menu_list_copy = copy.deepcopy(self.cafeteria_item_service.get_cafeteria_menu())
         for item in cart_items:
-            while True:
-                user_input = input(f"How many {item.Name} would you like to order?")
-                is_user_input_valid = self.user_input_helper.validate_user_input_is_a_number(user_input)
-                if not is_user_input_valid:
-                    print("You didn't enter a number. Please try again.")
-                elif item.Stock < int(user_input):
-                    print("Sorry you have tried to order more than we have in stock.")
-                else:
-                    break
-            user_input = int(user_input)
+            menu_item = next((x for x in menu_list_copy if x.Id == item.Id), None)
+            user_input = int(UserInputValidator.validate_input_for_items(menu_item))
             if item.Id not in self.unique_set:
                 self.unique_set.add(item.Id)
                 item.Stock = user_input
@@ -142,16 +126,7 @@ class UserflowService:
         menu_list_copy = copy.deepcopy(self.cafeteria_item_service.get_cafeteria_menu())
         cart_items_updated = []
         for item in cart_items:
-            while True:
-                user_input = input(f"How many {item.Name} would you like to remove?")
-                is_user_input_valid = self.user_input_helper.validate_user_input_is_a_number(user_input)
-                if not is_user_input_valid:
-                    print("You didn't enter a number. Please try again.")
-                elif item.Stock < int(user_input):
-                    print("Sorry you have tried to remove more than you have ordered.")
-                else:
-                    break
-            user_input = int(user_input)
+            user_input = int(UserInputValidator.validate_input_for_items(item, True))
             if item.Stock == 1:
                 continue
             else:
@@ -161,14 +136,7 @@ class UserflowService:
         return cart_items_updated
 
     def __order_items(self, menu_items: list[CafeteriaItem]):
-        while True:
-            user_input = input(
-                "Please enter the relevant number from the menu, that corresponds to the item you wish to order.\n "
-                "If you wish to order more than one item please separate each item number by comma.")
-            is_user_input_valid = self.user_input_helper.validate_user_input_is_comma_separated(user_input, len(menu_items))
-            if not is_user_input_valid:
-                print("The value you entered is invalid, please try again.")
-            else:
-                break
-        item_ids = self.user_input_helper.create_array_from_user_input(user_input)
+        cart = self.cart_service.add_to_cart(menu_items)
+        user_input = UserInputValidator.validate_input_before_parsing(cart)
+        item_ids = UserInputValidator.create_array_from_user_input(user_input)
         return [item for item in menu_items if item.Id in item_ids]
