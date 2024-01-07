@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from entities.cafeteria_item import CafeteriaItem
 from entities.cart import Cart
 from infrastructure.enums.enum_icon import Icon
+from infrastructure.helpers.price_converter import PriceConverter
 from infrastructure.helpers.user_input_helper import UserInputHelper
 from services.cafeteria_item_service import CafeteriaItemService
 from services.cart_service import CartService
@@ -14,6 +15,7 @@ class UserflowService:
     def __init__(self):
         self.cafeteria_item_service = CafeteriaItemService()
         self.cart_service = CartService()
+        self.price_converter = PriceConverter()
         self.user_input_helper = UserInputHelper()
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         self.unique_set = set()
@@ -34,7 +36,7 @@ class UserflowService:
                 self.__continue_flow(user_input, cart)
                 break
             else:
-                print("The input entered is not valid. Please try using 'Y/N' ")
+                print("The input entered is not valid. Please try using 'Y/N'")
 
     def __show_menu(self):
 
@@ -57,11 +59,26 @@ class UserflowService:
                 user_input = input("Are you finished with your order? (Y/N)")
 
     def __complete_user_flow(self, user_input: str, cart: Cart):
-        if user_input.capitalize() == "Y":
-            print("That's great, your total price is £", cart.TotalPrice)
-            input("Please enter the amount on screen to complete your purchase.")
-        elif user_input.capitalize() == "N":
-            self.__continue_flow(user_input, cart)
+        while True:
+            if user_input.capitalize() == "Y":
+                formatted_price =  self.price_converter.format_price(cart.TotalPrice)
+                print("That's great, your total price is £", formatted_price)
+                user_input = input("Please enter the amount on screen to complete your purchase.")
+                is_user_input_valid = self.user_input_helper.validate_user_input_is_a_decimal(user_input)
+                if not is_user_input_valid:
+                    print("Please enter the expected price")
+                    user_input = "Y"
+                elif formatted_price != user_input:
+                    print("What you have entered does not match the total expected price. Please try again.")
+                    user_input = "Y"
+                else:
+                    print("Thank you, have a woofin day")
+                    break
+            elif user_input.capitalize() == "N":
+                self.__continue_flow(user_input, cart)
+                break
+            else:
+                print("The input entered is not valid. Please try using 'Y/N'")
 
     def __add_to_cart(self, user_input: str, cart: Cart):
         if user_input.capitalize() == "Add".capitalize():
