@@ -25,11 +25,16 @@ class UserflowService:
         self.__show_menu()
         cart_items = self.__handle_order()
         cart = self.cart_service.add_to_cart(cart_items)
-        user_input = input("Are you finished with your order? (Y/N)")
-        if user_input.capitalize() == "Y":
-            self.__complete_user_flow(user_input, cart)
-        elif user_input.capitalize() == "N":
-            self.__continue_flow(user_input, cart)
+        while True:
+            user_input = input("Are you finished with your order? (Y/N)")
+            if user_input.capitalize() == "Y":
+                self.__complete_user_flow(user_input, cart)
+                break
+            elif user_input.capitalize() == "N":
+                self.__continue_flow(user_input, cart)
+                break
+            else:
+                print("The input entered is not valid. Please try using 'Y/N' ")
 
     def __show_menu(self):
 
@@ -80,7 +85,15 @@ class UserflowService:
     def __subtract_stock(self, cart_items: list[CafeteriaItem]):
         menu_list_copy = copy.deepcopy(self.cafeteria_item_service.get_cafeteria_menu())
         for item in cart_items:
-            user_input = input(f"How many {item.Name} would you like to order?")
+            while True:
+                user_input = input(f"How many {item.Name} would you like to order?")
+                is_user_input_valid = self.user_input_helper.validate_user_input_is_a_number(user_input)
+                if not is_user_input_valid:
+                    print("You didn't enter a number. Please try again.")
+                elif item.Stock < int(user_input):
+                    print("Sorry you have tried to order more than we have in stock.")
+                else:
+                    break
             user_input = int(user_input)
             if item.Id not in self.unique_set:
                 self.unique_set.add(item.Id)
