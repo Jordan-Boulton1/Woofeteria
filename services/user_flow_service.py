@@ -106,8 +106,14 @@ class UserflowService:
         return cart_items_updated
 
     def __order_items(self, menu_items: list[CafeteriaItem]):
-        user_input = input(
-            "Please enter the relevant number from the menu, that corresponds to the item you wish to order.\n "
-            "If you wish to order more than one item please separate each item number by comma.")
+        while True:
+            user_input = input(
+                "Please enter the relevant number from the menu, that corresponds to the item you wish to order.\n "
+                "If you wish to order more than one item please separate each item number by comma.")
+            is_user_input_valid = self.user_input_helper.validate_user_input_is_comma_separated(user_input,                                                                                               len(menu_items))
+            if not is_user_input_valid:
+                print("The value you entered is invalid, please try again.")
+            else:
+                break
         item_ids = self.user_input_helper.create_array_from_user_input(user_input)
         return [item for item in menu_items if item.Id in item_ids]
