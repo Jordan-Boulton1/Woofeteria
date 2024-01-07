@@ -36,7 +36,7 @@ class UserflowService:
                 self.__continue_flow(user_input, cart)
                 break
             else:
-                print("The input entered is not valid. Please try using 'Y/N'")
+                print("The input entered is not valid. Please try using (Y/N)")
 
     def __show_menu(self):
 
@@ -50,35 +50,45 @@ class UserflowService:
                 break
             print("Your current order: ")
             self.cart_service.print_cart(cart)
-            user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove)")
-            if user_input.capitalize() == "Add".capitalize():
-                self.__add_to_cart(user_input, cart)
-                user_input = input("Are you finished with your order? (Y/N)")
-            elif user_input.capitalize() == "Remove".capitalize():
-                self.__remove_from_cart(cart)
-                user_input = input("Are you finished with your order? (Y/N)")
+            while True:
+                user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove)")
+                if user_input.capitalize() == "Add".capitalize():
+                    self.__add_to_cart(user_input, cart)
+                    user_input = input("Are you finished with your order? (Y/N)")
+                    if user_input.capitalize() == "Y":
+                        break
+                    elif user_input.capitalize() == "N":
+                        self.__continue_flow(user_input, cart)
+                        break
+                    else:
+                        print("The input entered is not valid. Please try using (Y/N)")
+                elif user_input.capitalize() == "Remove".capitalize():
+                    self.__remove_from_cart(cart)
+                    user_input = input("Are you finished with your order? (Y/N)")
+                    if user_input.capitalize() == "Y":
+                        break
+                    elif user_input.capitalize() == "N":
+                        self.__continue_flow(user_input, cart)
+                        break
+                    else:
+                        print("The input entered is not valid. Please try using (Y/N)")
+                    break
+                else:
+                    print("The input entered is not valid. Please try using (Add/Remove)")
 
     def __complete_user_flow(self, user_input: str, cart: Cart):
         while True:
-            if user_input.capitalize() == "Y":
-                formatted_price =  self.price_converter.format_price(cart.TotalPrice)
-                print("That's great, your total price is £", formatted_price)
-                user_input = input("Please enter the amount on screen to complete your purchase.")
-                is_user_input_valid = self.user_input_helper.validate_user_input_is_a_decimal(user_input)
-                if not is_user_input_valid:
-                    print("Please enter the expected price")
-                    user_input = "Y"
-                elif formatted_price != user_input:
-                    print("What you have entered does not match the total expected price. Please try again.")
-                    user_input = "Y"
-                else:
-                    print("Thank you, have a woofin day")
-                    break
-            elif user_input.capitalize() == "N":
-                self.__continue_flow(user_input, cart)
-                break
+            formatted_price =  self.price_converter.format_price(cart.TotalPrice)
+            print("That's great, your total price is £", formatted_price)
+            user_input = input("Please enter the amount on screen to complete your purchase.")
+            is_user_input_valid = self.user_input_helper.validate_user_input_is_a_decimal(user_input)
+            if not is_user_input_valid:
+                print("Please enter the expected price")
+            elif formatted_price != user_input:
+                print("What you have entered does not match the total expected price. Please try again.")
             else:
-                print("The input entered is not valid. Please try using 'Y/N'")
+                print("Thank you, have a woofin day")
+                break
 
     def __add_to_cart(self, user_input: str, cart: Cart):
         if user_input.capitalize() == "Add".capitalize():
