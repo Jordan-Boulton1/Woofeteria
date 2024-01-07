@@ -46,36 +46,34 @@ class UserflowService:
             if user_input.capitalize() == "Y":
                 self.__complete_user_flow(cart)
                 break
-            print("Your current order: ")
-            self.cart_service.print_cart(cart)
-            user_input = self.__handle_continue_flow(cart)
+            elif user_input.capitalize() == "N":
+                print("Your current order: ")
+                self.cart_service.print_cart(cart)
 
-    def __handle_continue_flow(self, cart):
-        while True:
-            user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove)")
-            if user_input.capitalize() == "Add".capitalize():
-                self.__add_to_cart(cart)
-                user_input = input("Are you finished with your order? (Y/N)")
-                if user_input.capitalize() == "Y":
-                    break
-                elif user_input.capitalize() == "N":
-                    self.__continue_flow(user_input, cart)
-                    break
-                else:
-                    print("The input entered is not valid. Please try using (Y/N)")
-            elif user_input.capitalize() == "Remove".capitalize():
-                self.__remove_from_cart(cart)
-                user_input = input("Are you finished with your order? (Y/N)")
-                if user_input.capitalize() == "Y":
-                    break
-                elif user_input.capitalize() == "N":
-                    self.__continue_flow(user_input, cart)
-                    break
-                else:
-                    print("The input entered is not valid. Please try using (Y/N)")
+                while True:
+                    user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove)")
+                    if user_input.capitalize() == "Add".capitalize():
+                        self.__add_to_cart(cart)
+                        self.__handle_continue_flow(cart)
+                    elif user_input.capitalize() == "Remove".capitalize():
+                        self.__remove_from_cart(cart)
+                        self.__handle_continue_flow(cart)
+                    else:
+                        print("The input entered is not valid. Please try using (Add/Remove)")
             else:
-                print("The input entered is not valid. Please try using (Add/Remove)")
-        return user_input
+                print("The input entered is not valid. Please try using (Y/N)")
+
+    def __handle_continue_flow(self, cart: Cart):
+        while True:
+            user_input = input("Are you finished with your order? (Y/N)")
+            if user_input.capitalize() == "Y":
+                self.__complete_user_flow(cart)
+                break
+            elif user_input.capitalize() == "N":
+                self.__continue_flow(user_input, cart)
+                break
+            else:
+                print("The input entered is not valid. Please try using (Y/N)")
 
     def __complete_user_flow(self, cart: Cart):
         while True:
@@ -128,6 +126,7 @@ class UserflowService:
         for item in cart_items:
             user_input = int(UserInputValidator.validate_input_for_items(item, True))
             if item.Stock == 1:
+                self.cafeteria_item_service.add_to_stock(item, menu_list_copy, user_input)
                 continue
             else:
                 item.Stock -= user_input
