@@ -71,8 +71,15 @@ class UserflowService:
             self.cart_service.update_cart(cart, cart.Items)
 
     def __remove_from_cart(self, cart: Cart):
-        user_input = input("Which item(s) would you like to remove?\n "
-                           "If you wish to remove more than one item please separate each item number by comma.")
+        while True:
+            user_input = input("Which item(s) would you like to remove?\n "
+                               "If you wish to remove more than one item please separate each item number by comma.")
+            is_user_input_valid = self.user_input_helper.validate_user_input_is_comma_separated(user_input,
+                                                                                                len(cart.Items))
+            if not is_user_input_valid:
+                print("The value you entered is invalid, please try again.")
+            else:
+                break
         item_ids = self.user_input_helper.create_array_from_user_input(user_input)
         cart_items = [item for item in cart.Items if item.Id in item_ids]
         cart.Items = self.__add_stock(cart_items)
@@ -108,7 +115,15 @@ class UserflowService:
         menu_list_copy = copy.deepcopy(self.cafeteria_item_service.get_cafeteria_menu())
         cart_items_updated = []
         for item in cart_items:
-            user_input = input(f"How many {item.Name} would you like to remove?")
+            while True:
+                user_input = input(f"How many {item.Name} would you like to remove?")
+                is_user_input_valid = self.user_input_helper.validate_user_input_is_a_number(user_input)
+                if not is_user_input_valid:
+                    print("You didn't enter a number. Please try again.")
+                elif item.Stock < int(user_input):
+                    print("Sorry you have tried to remove more than you have ordered.")
+                else:
+                    break
             user_input = int(user_input)
             if item.Stock == 1:
                 continue
@@ -123,7 +138,7 @@ class UserflowService:
             user_input = input(
                 "Please enter the relevant number from the menu, that corresponds to the item you wish to order.\n "
                 "If you wish to order more than one item please separate each item number by comma.")
-            is_user_input_valid = self.user_input_helper.validate_user_input_is_comma_separated(user_input,                                                                                               len(menu_items))
+            is_user_input_valid = self.user_input_helper.validate_user_input_is_comma_separated(user_input, len(menu_items))
             if not is_user_input_valid:
                 print("The value you entered is invalid, please try again.")
             else:
