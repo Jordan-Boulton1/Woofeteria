@@ -27,7 +27,7 @@ class CafeteriaItemService:
         last_item = self.cafeteria_items[-1]
         for i in range(amount_of_items):
             item_id = last_item.Id + 1
-            item_name = UserInputValidator.validate_user_input_is_correct_item_name()
+            item_name = UserInputValidator.validate_user_input_is_correct_item_name(self.cafeteria_items).title()
             validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item_name)
             validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item_name)
             item = CafeteriaItem(item_id, item_name, validated_item_price, validated_item_quantity)

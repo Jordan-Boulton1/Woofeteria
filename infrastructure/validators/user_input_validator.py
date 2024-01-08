@@ -106,7 +106,7 @@ class UserInputValidator:
     def validate_user_name():
         while True:
             user_input = input("What is your name? ")
-            if not user_input.isalpha():
+            if not UserInputValidator.__validate_user_input_is_name(user_input):
                 print("Hmm, that didn't quite hit the bark. Try again.")
             else:
                 break
@@ -132,16 +132,25 @@ class UserInputValidator:
                 print("Please enter a valid input")
             else:
                 break
-        return float(validate_item_price)
+        return float(item_price)
 
     @staticmethod
-    def validate_user_input_is_correct_item_name():
+    def validate_user_input_is_correct_item_name(menu: list[CafeteriaItem]):
         while True:
             item_name = input("Please enter a name for the new cafeteria item: ")
             if len(item_name) == 0:
                 print("Please enter a valid input")
-            elif not item_name.isalpha():
+            elif not UserInputValidator.__validate_user_input_is_name(item_name):
                 print("Please enter a valid input")
+            elif next((x for x in menu if x.Name.capitalize() == item_name.capitalize()), None) is not None:
+                print(f"An item with the name {item_name.title()} already exists in the menu")
             else:
                 break
         return item_name
+
+    @staticmethod
+    def __validate_user_input_is_name(user_input: str):
+        if len(user_input) == 0:
+            return False
+        pattern = "^(?=.{2,100}$)[^\W\d_]+(?:[-' ][^\W\d_]+)*[.?!]?$"
+        return bool(re.match(pattern, user_input))

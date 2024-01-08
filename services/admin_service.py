@@ -11,13 +11,13 @@ class AdminService:
         try:
             admin_info = JsonFileHelper.read_from_config_file()
             if admin_info["admin_user"] != user_input:
-                return False
+                return False, None
             else:
                 user_input = input("Please enter the secret password: ")
                 return self.__show_admin_flow(user_input, admin_info["admin_password"])
         except FileNotFoundError:
             print("Configuration file not found")
-            return False
+            return False, None
 
     def __show_admin_flow(self, user_input: str, expected_admin_password: str):
         if user_input == expected_admin_password:
