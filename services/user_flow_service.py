@@ -6,6 +6,7 @@ from entities.cart import Cart
 from infrastructure.enums.enum_icon import Icon
 from infrastructure.helpers.price_converter import PriceConverter
 from infrastructure.validators.user_input_validator import UserInputValidator
+from services.admin_service import AdminService
 from services.cafeteria_item_service import CafeteriaItemService
 from services.cart_service import CartService
 
@@ -14,6 +15,7 @@ from services.cart_service import CartService
 class UserflowService:
     def __init__(self):
         self.cafeteria_item_service = CafeteriaItemService()
+        self.admin_service = AdminService()
         self.cart_service = CartService()
         self.price_converter = PriceConverter()
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
@@ -27,21 +29,24 @@ class UserflowService:
         If the user provides unexpected inputs, the user will be prompted with a message stating that the input was not
         valid.
         """
-        print(f"{Icon.DogIcon.value} Welcome to Storm's Woofeteria. {Icon.DogIcon.value}\n "
-              f"Here is what Chef Storm has to offer.")
-        self.__show_menu()
-        cart_items = self.__handle_order()
-        cart = self.cart_service.add_to_cart(cart_items)
-        while True:
-            user_input = input("Are you finished with your order? (Y/N)")
-            if user_input.capitalize() == "Y":
-                self.__complete_user_flow(cart)
-                break
-            elif user_input.capitalize() == "N":
-                self.__continue_flow(user_input, cart)
-                break
-            else:
-                print("The input entered is not valid. Please try using (Y/N)")
+        print(f"{Icon.DogIcon.value} Welcome to Storm's Woofeteria. {Icon.DogIcon.value}")
+        user_input = UserInputValidator.validate_user_name()
+        admin_name_provided = self.admin_service.validate_if_admin_name_provided(user_input)
+        if not admin_name_provided:
+            print(f"Hello {user_input}. Here is what Chef Storm has to offer.")
+            self.__show_menu()
+            cart_items = self.__handle_order()
+            cart = self.cart_service.add_to_cart(cart_items)
+            while True:
+                user_input = input("Are you finished with your order? (Y/N)")
+                if user_input.capitalize() == "Y":
+                    self.__complete_user_flow(cart)
+                    break
+                elif user_input.capitalize() == "N":
+                    self.__continue_flow(user_input, cart)
+                    break
+                else:
+                    print("The input entered is not valid. Please try using (Y/N)")
 
     def __show_menu(self):
         """

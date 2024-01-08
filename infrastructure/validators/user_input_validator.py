@@ -101,3 +101,13 @@ class UserInputValidator:
             else:
                 break
         return user_input
+
+    @staticmethod
+    def validate_user_name():
+        while True:
+            user_input = input("What is your name? ")
+            if not user_input.isalpha():
+                print("Hmm, that didn't quite hit the bark. Try again.")
+            else:
+                break
+        return user_input
