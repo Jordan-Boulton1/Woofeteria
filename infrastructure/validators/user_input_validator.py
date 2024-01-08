@@ -53,7 +53,7 @@ class UserInputValidator:
             return False
 
     @staticmethod
-    def validate_input_before_parsing(cart, is_removing: bool = False):
+    def validate_input_before_parsing(cafeteria_items: list[CafeteriaItem], is_removing: bool = False):
         """
         Replaces the displayed text in the console depending on if the user is removing or adding an item then creates a
         while loop which validates if the provided input contains integers and if more than one they are separated by
@@ -70,7 +70,7 @@ class UserInputValidator:
         while True:
             user_input = input(info_text)
             is_user_input_valid = UserInputValidator.validate_user_input_is_comma_separated(user_input,
-                                                                                            len(cart.Items))
+                                                                                            len(cafeteria_items))
             if not is_user_input_valid:
                 print("The value you entered is invalid, please try again.")
             else:

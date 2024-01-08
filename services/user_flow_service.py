@@ -35,7 +35,7 @@ class UserflowService:
         if not admin_name_provided[0]:
             if admin_name_provided[1] is not None:
                 self.menu = admin_name_provided[1]
-            print(f"Hello {user_input}. Here is what Chef Storm has to offer.")
+            print(f"Hello {user_input.title()}. Here is what Chef Storm has to offer.")
             self.__show_menu()
             cart_items = self.__handle_order()
             cart = self.cart_service.add_to_cart(cart_items)
@@ -142,7 +142,7 @@ class UserflowService:
         Then an array of integers is created from the user input and that array is used to locate the items in the cart
         after that the item is removed from the cart and added back to the cafeteria stock.
         """
-        user_input = UserInputValidator.validate_input_before_parsing(cart, True)
+        user_input = UserInputValidator.validate_input_before_parsing(cart.Items, True)
         item_ids = UserInputValidator.create_array_from_user_input(user_input)
         cart_items = [item for item in cart.Items if item.Id in item_ids]
         cart.Items = self.__add_stock(cart_items)
@@ -206,7 +206,6 @@ class UserflowService:
         they are separated by a comma then we create an array of integers from the user input and locate and return
         the items from the menu by their corresponding id.
         """
-        cart = self.cart_service.add_to_cart(menu_items)
-        user_input = UserInputValidator.validate_input_before_parsing(cart)
+        user_input = UserInputValidator.validate_input_before_parsing(menu_items)
         item_ids = UserInputValidator.create_array_from_user_input(user_input)
         return [item for item in menu_items if item.Id in item_ids]
