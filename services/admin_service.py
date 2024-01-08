@@ -55,6 +55,7 @@ class AdminService:
         self.cafeteria_item_service.print_cafeteria_menu(self.menu)
         user_input = UserInputValidator.validate_input_before_parsing(self.menu, True)
         item_ids = UserInputValidator.create_array_from_user_input(user_input)
+        UserInputValidator.validate_items_exist_in_menu(self.menu, item_ids)
         updated_menu = [item for item in self.menu if item.Id not in item_ids]
         self.menu = updated_menu
         return self.menu

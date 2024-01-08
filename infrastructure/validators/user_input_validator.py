@@ -14,7 +14,7 @@ class UserInputValidator:
         return [int(x) for x in user_input.split(',') if x.strip().isdigit()]
 
     @staticmethod
-    def validate_user_input_is_comma_separated(user_input: str, array_length: int):
+    def validate_user_input_is_comma_separated(user_input: str, start: int, end: int):
         """
         If the user is an empty string or whitespace, returns false.
         Otherwise, creates a regex pattern that will accept only integers from 1 until the array length provided.
@@ -25,7 +25,7 @@ class UserInputValidator:
         """
         if len(user_input) == 0:
             return False
-        pattern = re.compile(r'^(?:[1-' + str(array_length) + '](?:, ?[1-' + str(array_length) + '])*)?$')
+        pattern = re.compile(r'^(?:[' + str(start) + '-' + str(end) + '](?:, ?[' + str(start) + '-' + str(end) + '])*)?$')
         return bool(re.match(pattern, user_input))
 
     @staticmethod
@@ -69,8 +69,10 @@ class UserInputValidator:
                          "If you wish to remove more than one item please separate each item number by comma.")
         while True:
             user_input = input(info_text)
+            first_item = cafeteria_items[0]
+            last_item = cafeteria_items[-1]
             is_user_input_valid = UserInputValidator.validate_user_input_is_comma_separated(user_input,
-                                                                                            len(cafeteria_items))
+                                                                                            first_item.Id, last_item.Id)
             if not is_user_input_valid:
                 print("The value you entered is invalid, please try again.")
             else:
@@ -154,3 +156,4 @@ class UserInputValidator:
             return False
         pattern = "^(?=.{2,100}$)[^\W\d_]+(?:[-' ][^\W\d_]+)*[.?!]?$"
         return bool(re.match(pattern, user_input))
+
