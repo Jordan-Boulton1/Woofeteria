@@ -32,7 +32,9 @@ class UserflowService:
         print(f"{Icon.DogIcon.value} Welcome to Storm's Woofeteria. {Icon.DogIcon.value}")
         user_input = UserInputValidator.validate_user_name()
         admin_name_provided = self.admin_service.validate_if_admin_name_provided(user_input)
-        if not admin_name_provided:
+        if not admin_name_provided[0]:
+            if admin_name_provided[1] is not None:
+                self.menu = admin_name_provided[1]
             print(f"Hello {user_input}. Here is what Chef Storm has to offer.")
             self.__show_menu()
             cart_items = self.__handle_order()
@@ -53,7 +55,7 @@ class UserflowService:
         Shows the menu
         """
         print("Food")
-        self.cafeteria_item_service.print_cafeteria_menu()
+        self.cafeteria_item_service.print_cafeteria_menu(self.menu)
 
     def __continue_flow(self, user_input: str, cart: Cart):
         """

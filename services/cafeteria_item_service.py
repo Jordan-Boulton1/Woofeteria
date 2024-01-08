@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from entities.cafeteria_item import CafeteriaItem
 from infrastructure.helpers.price_converter import PriceConverter
+from infrastructure.validators.user_input_validator import UserInputValidator
 
 
 class CafeteriaItemService:
@@ -9,17 +10,28 @@ class CafeteriaItemService:
         self.cafeteria_items = self.__populate_cafeteria_menu()
         self.price_converter = PriceConverter()
 
-    def print_cafeteria_menu(self):
+    def print_cafeteria_menu(self, menu: list[CafeteriaItem]):
         """
         Prints the menu to the console.
         """
-        for item in self.cafeteria_items:
+        for item in menu:
             print(f"{item.Id}. {item.Name} - £{self.price_converter.format_price(item.Price)} | Stock - x{item.Stock}")
 
     def get_cafeteria_menu(self):
         """
         Returns the list of cafeteria menu items.
         """
+        return self.cafeteria_items
+
+    def add_items_to_menu(self, amount_of_items: int):
+        last_item = self.cafeteria_items[-1]
+        for i in range(amount_of_items):
+            item_id = last_item.Id + 1
+            item_name = UserInputValidator.validate_user_input_is_correct_item_name()
+            validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item_name)
+            validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item_name)
+            item = CafeteriaItem(item_id, item_name, validated_item_price, validated_item_quantity)
+            self.cafeteria_items.append(item)
         return self.cafeteria_items
 
     def subtract_from_stock(self, ordered_item: CafeteriaItem, menu_list: list[CafeteriaItem], ordered_amount: int):

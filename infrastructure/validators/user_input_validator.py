@@ -111,3 +111,37 @@ class UserInputValidator:
             else:
                 break
         return user_input
+
+    @staticmethod
+    def validate_user_input_is_correct_quantity(item_name: str):
+        while True:
+            item_quantity = input(f"Please enter the amount of {item_name} you would ike to add to the menu: ")
+            validate_item_quantity = UserInputValidator.validate_user_input_is_a_number(item_quantity)
+            if not validate_item_quantity:
+                print("Please enter a valid input")
+            else:
+                break
+        return int(item_quantity)
+
+    @staticmethod
+    def validate_user_input_is_correct_price(item_name):
+        while True:
+            item_price = input(f"Please enter the price for one {item_name}: ")
+            validate_item_price = UserInputValidator.validate_user_input_is_a_decimal(item_price)
+            if not validate_item_price:
+                print("Please enter a valid input")
+            else:
+                break
+        return float(validate_item_price)
+
+    @staticmethod
+    def validate_user_input_is_correct_item_name():
+        while True:
+            item_name = input("Please enter a name for the new cafeteria item: ")
+            if len(item_name) == 0:
+                print("Please enter a valid input")
+            elif not item_name.isalpha():
+                print("Please enter a valid input")
+            else:
+                break
+        return item_name
