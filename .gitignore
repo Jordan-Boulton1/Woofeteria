@@ -8,3 +8,4 @@ node_modules/
 .github/
 .idea/
 services/__pycache__/
+creds.json
