@@ -35,7 +35,7 @@ class AdminService:
         is_flow_continued = False
         while True:
             self.cafeteria_item_service.print_cafeteria_menu(self.cafeteria_item_service.get_cafeteria_menu())
-            user_input = input("How would you like to edit the menu? (Add/Update/Remove)")
+            user_input = input("How would you like to edit the menu? (Add/Update/Remove/Exit)")
             if user_input.capitalize() == "Add":
                 result = False, self.__handle_add()
                 is_flow_continued = self.__continue_or_complete_flow()
@@ -45,8 +45,11 @@ class AdminService:
             elif user_input.capitalize() == "Remove":
                 result = False, self.__handle_remove()
                 is_flow_continued = self.__continue_or_complete_flow()
+            elif user_input.capitalize() == "Exit":
+                result = False, self.menu
+                is_flow_continued = False
             else:
-                print("The input entered is not valid. Please try using (Add/Update/Remove)")
+                print("The input entered is not valid. Please try using (Add/Update/Remove/Exit)")
                 is_flow_continued = True
             if is_flow_continued:
                 continue
