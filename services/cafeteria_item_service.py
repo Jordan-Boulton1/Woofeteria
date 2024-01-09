@@ -85,6 +85,12 @@ class CafeteriaItemService:
                 cafeteria_item.Stock += ordered_amount
         self.cafeteria_items = menu_list
 
+    def recalculate_ids(self, menu_list: list[CafeteriaItem]):
+        for index, item in enumerate(menu_list, start=1):
+            item.Id = index
+
+        return menu_list
+
     def __populate_cafeteria_menu(self):
         """
         Populates the menu with initial values.
