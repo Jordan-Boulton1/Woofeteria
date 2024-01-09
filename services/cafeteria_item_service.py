@@ -25,14 +25,43 @@ class CafeteriaItemService:
 
     def add_items_to_menu(self, amount_of_items: int):
         last_item = self.cafeteria_items[-1]
+        input_text = "Please enter a name for the new cafeteria item: "
         for i in range(amount_of_items):
             item_id = last_item.Id + 1
-            item_name = UserInputValidator.validate_user_input_is_correct_item_name(self.cafeteria_items).title()
+            item_name = UserInputValidator.validate_user_input_is_correct_item_name(self.cafeteria_items,
+                                                                                    input_text).title()
             validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item_name)
             validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item_name)
             item = CafeteriaItem(item_id, item_name, validated_item_price, validated_item_quantity)
             self.cafeteria_items.append(item)
         return self.cafeteria_items
+
+    def update_items(self, item_ids: list[int]):
+        for item in self.cafeteria_items:
+            for item_id in item_ids:
+                if item.Id == item_id:
+                    input_text = f"Please enter a new name for {item.Name} or type 'Skip' not to change it."
+                    item_name = UserInputValidator.validate_user_input_is_correct_item_name(
+                        self.cafeteria_items,
+                        input_text,
+                        True).title()
+                    item = self.__handle_update_value(item_name, item)
+                    validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item.Name, True)
+                    item = self.__handle_update_value(validated_item_quantity, item)
+                    validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item.Name, True)
+                    item = self.__handle_update_value(validated_item_price, item)
+        return self.cafeteria_items
+
+
+    def __handle_update_value(self, user_input, item: CafeteriaItem):
+        if user_input != "Skip":
+            if type(user_input) is str:
+                item.Name = user_input
+            if type(user_input) is int:
+                item.Stock = user_input
+            if type(user_input) is float:
+                item.Price = user_input
+        return item
 
     def subtract_from_stock(self, ordered_item: CafeteriaItem, menu_list: list[CafeteriaItem], ordered_amount: int):
         """

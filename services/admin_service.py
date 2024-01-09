@@ -25,7 +25,6 @@ class AdminService:
     def __show_admin_flow(self, user_input: str, expected_admin_password: str):
         if user_input == expected_admin_password:
             print("You have successfully authorized the secret woof mode.")
-            self.cafeteria_item_service.print_cafeteria_menu(self.cafeteria_item_service.get_cafeteria_menu())
             result = self.__show_available_options()
             return result
         else:
@@ -35,9 +34,13 @@ class AdminService:
         result = False, None
         is_flow_continued = False
         while True:
+            self.cafeteria_item_service.print_cafeteria_menu(self.cafeteria_item_service.get_cafeteria_menu())
             user_input = input("How would you like to edit the menu? (Add/Update/Remove)")
             if user_input.capitalize() == "Add":
                 result = False, self.__handle_add()
+                is_flow_continued = self.__continue_or_complete_flow()
+            elif user_input.capitalize() == "Update":
+                result = False, self.__handle_update()
                 is_flow_continued = self.__continue_or_complete_flow()
             elif user_input.capitalize() == "Remove":
                 result = False, self.__handle_remove()
@@ -51,11 +54,17 @@ class AdminService:
                 break
         return result
 
+    def __handle_update(self):
+        user_input = UserInputValidator.validate_input_before_parsing(self.menu, False, True)
+        item_ids = UserInputValidator.create_array_from_user_input(user_input)
+        updated_menu = self.cafeteria_item_service.update_items(item_ids)
+        self.menu = updated_menu
+        return self.menu
+
     def __handle_remove(self):
         self.cafeteria_item_service.print_cafeteria_menu(self.menu)
         user_input = UserInputValidator.validate_input_before_parsing(self.menu, True)
         item_ids = UserInputValidator.create_array_from_user_input(user_input)
-        UserInputValidator.validate_items_exist_in_menu(self.menu, item_ids)
         updated_menu = [item for item in self.menu if item.Id not in item_ids]
         self.menu = updated_menu
         return self.menu

@@ -53,7 +53,7 @@ class UserInputValidator:
             return False
 
     @staticmethod
-    def validate_input_before_parsing(cafeteria_items: list[CafeteriaItem], is_removing: bool = False):
+    def validate_input_before_parsing(cafeteria_items: list[CafeteriaItem], is_removing: bool = False, is_updating: bool = False):
         """
         Replaces the displayed text in the console depending on if the user is removing or adding an item then creates a
         while loop which validates if the provided input contains integers and if more than one they are separated by
@@ -61,9 +61,12 @@ class UserInputValidator:
         If the validation fails the user will be prompted with a message stating the input is invalid.
         Otherwise, the loop will break and return the user input.
         """
+        action = "order"
+        if is_updating:
+            action = "update"
         info_text = (
-            "Please enter the relevant number from the menu, that corresponds to the item you wish to order.\n "
-            "If you wish to order more than one item please separate each item number by comma.")
+            f"Please enter the relevant number from the menu, that corresponds to the item you wish to {action}.\n "
+            f"If you wish to {action} more than one item please separate each item number by comma.")
         if is_removing:
             info_text = ("Which item(s) would you like to remove?\n "
                          "If you wish to remove more than one item please separate each item number by comma.")
@@ -115,40 +118,53 @@ class UserInputValidator:
         return user_input
 
     @staticmethod
-    def validate_user_input_is_correct_quantity(item_name: str):
+    def validate_user_input_is_correct_quantity(item_name: str, is_updating: bool = False):
+        result = ""
         while True:
             item_quantity = input(f"Please enter the amount of {item_name} you would ike to add to the menu: ")
+            if is_updating and item_quantity.capitalize() == "Skip":
+                result = "Skip"
+                break
             validate_item_quantity = UserInputValidator.validate_user_input_is_a_number(item_quantity)
             if not validate_item_quantity:
                 print("Please enter a valid input")
             else:
+                result = int(item_quantity)
                 break
-        return int(item_quantity)
+        return result
 
     @staticmethod
-    def validate_user_input_is_correct_price(item_name):
+    def validate_user_input_is_correct_price(item_name: str, is_updating: bool = False):
+        result = ""
         while True:
             item_price = input(f"Please enter the price for one {item_name}: ")
+            if is_updating and item_price.capitalize() == "Skip":
+                result = "Skip"
+                break
             validate_item_price = UserInputValidator.validate_user_input_is_a_decimal(item_price)
             if not validate_item_price:
                 print("Please enter a valid input")
             else:
+                result = float(item_price)
                 break
-        return float(item_price)
+        return result
 
     @staticmethod
-    def validate_user_input_is_correct_item_name(menu: list[CafeteriaItem]):
+    def validate_user_input_is_correct_item_name(menu: list[CafeteriaItem], info_text: str, is_updating: bool = False):
         while True:
-            item_name = input("Please enter a name for the new cafeteria item: ")
+            item_name = input(info_text)
             if len(item_name) == 0:
                 print("Please enter a valid input")
             elif not UserInputValidator.__validate_user_input_is_name(item_name):
                 print("Please enter a valid input")
             elif next((x for x in menu if x.Name.capitalize() == item_name.capitalize()), None) is not None:
                 print(f"An item with the name {item_name.title()} already exists in the menu")
+            elif is_updating and item_name.capitalize() == "Skip":
+                break
             else:
                 break
         return item_name
+
 
     @staticmethod
     def __validate_user_input_is_name(user_input: str):
