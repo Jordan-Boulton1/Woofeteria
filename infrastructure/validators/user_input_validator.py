@@ -66,10 +66,10 @@ class UserInputValidator:
             action = "update"
         info_text = (
             f"Please enter the relevant number from the menu, that corresponds to the item you wish to {action}.\n "
-            f"If you wish to {action} more than one item please separate each item number by comma.")
+            f"If you wish to {action} more than one item please separate each item number by comma. ")
         if is_removing:
             info_text = ("Which item(s) would you like to remove?\n "
-                         "If you wish to remove more than one item please separate each item number by comma.")
+                         "If you wish to remove more than one item please separate each item number by comma. ")
         while True:
             user_input = input(info_text)
             first_item = cafeteria_items[0]
@@ -97,7 +97,7 @@ class UserInputValidator:
         if item is None:
             print("Sorry, we could find an item with that Id")
         while True:
-            user_input = input(f"How many {item.Name} would you like to {info_text}?")
+            user_input = input(f"How many {item.Name} would you like to {info_text}? ")
             is_user_input_valid = UserInputValidator.validate_user_input_is_a_number(user_input)
             if not is_user_input_valid:
                 print("You didn't enter a number. Please try again.")

@@ -1,5 +1,11 @@
 import copy
+import colorama
 from dataclasses import dataclass
+from colorama import Fore, Back, Style
+
+from infrastructure.helpers.color_helper import ColorHelper
+
+colorama.init()
 
 from entities.cafeteria_item import CafeteriaItem
 from entities.cart import Cart
@@ -37,10 +43,11 @@ class UserflowService:
                 self.menu = admin_name_provided[1]
             print(f"Hello {user_input.title()}. Here is what Chef Storm has to offer.")
             self.__show_menu()
-            cart_items = self.__handle_order()
+            cart_items = self.__handle_order(self.menu)
             cart = self.cart_service.add_to_cart(cart_items)
             while True:
-                user_input = input("Are you finished with your order? (Y/N)")
+                user_input = input(f"Are you finished with your order?"
+                                   f"{ColorHelper.color_yes_no_text()} ")
                 if user_input.capitalize() == "Y":
                     self.__complete_user_flow(cart)
                     break
@@ -48,7 +55,7 @@ class UserflowService:
                     self.__continue_flow(user_input, cart)
                     break
                 else:
-                    print("The input entered is not valid. Please try using (Y/N)")
+                    print(f"The input entered is not valid. Please try using {ColorHelper.color_yes_no_text()} ")
 
     def __show_menu(self):
         """
@@ -75,17 +82,19 @@ class UserflowService:
                 self.cart_service.print_cart(cart)
 
                 while True:
-                    user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove)")
+                    user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove) ")
                     if user_input.capitalize() == "Add".capitalize():
                         self.__add_to_cart(cart)
                         self.__handle_continue_flow(cart)
+                        break
                     elif user_input.capitalize() == "Remove".capitalize():
                         self.__remove_from_cart(cart)
                         self.__handle_continue_flow(cart)
+                        break
                     else:
-                        print("The input entered is not valid. Please try using (Add/Remove)")
+                        print("The input entered is not valid. Please try using (Add/Remove) ")
             else:
-                print("The input entered is not valid. Please try using (Y/N)")
+                print(f"The input entered is not valid. Please try using {ColorHelper.color_yes_no_text()} ")
 
     def __handle_continue_flow(self, cart: Cart):
         """
@@ -93,7 +102,7 @@ class UserflowService:
         "N".
         """
         while True:
-            user_input = input("Are you finished with your order? (Y/N)")
+            user_input = input(f"Are you finished with your order? {ColorHelper.color_yes_no_text()} ")
             if user_input.capitalize() == "Y":
                 self.__complete_user_flow(cart)
                 break
@@ -101,7 +110,7 @@ class UserflowService:
                 self.__continue_flow(user_input, cart)
                 break
             else:
-                print("The input entered is not valid. Please try using (Y/N)")
+                print(f"The input entered is not valid. Please try using{ColorHelper.color_yes_no_text()} ")
 
     def __complete_user_flow(self, cart: Cart):
         """
@@ -113,15 +122,18 @@ class UserflowService:
         If the user enters a value that does not match the total price of the cart, the user will be shown an error
         message stating that the value they have entered does not match the total price of the cart.
         """
+        formatted_price = self.price_converter.format_price(cart.TotalPrice)
+        info_text = f"That's great, your total price is £{formatted_price}"
         while True:
-            formatted_price = self.price_converter.format_price(cart.TotalPrice)
-            print("That's great, your total price is £", formatted_price)
-            user_input = input("Please enter the amount on screen to complete your purchase.")
+            print(info_text)
+            user_input = input("Please enter the amount on screen to complete your purchase. ")
             is_user_input_valid = UserInputValidator.validate_user_input_is_a_decimal(user_input)
             if not is_user_input_valid:
                 print("Please enter a valid input")
+                info_text = f"Your total price is £{formatted_price}"
             elif formatted_price != user_input:
-                print("What you have entered does not match the total expected price. Please try again.")
+                print("What you have entered does not match the total expected price. Please try again. ")
+                info_text = f"Your total price is £{formatted_price}"
             else:
                 print("Thank you, have a woofin day")
                 break
@@ -131,7 +143,7 @@ class UserflowService:
         Prints the menu and adds the ordered item to the cart.
         """
         self.__show_menu()
-        cart_items = self.__handle_order()
+        cart_items = self.__handle_order(self.menu)
         cart.Items = cart_items
         self.cart_service.update_cart(cart, cart.Items)
 
@@ -148,11 +160,11 @@ class UserflowService:
         cart.Items = self.__add_stock(cart_items)
         self.cart_service.update_cart(cart, cart.Items)
 
-    def __handle_order(self):
+    def __handle_order(self, items: list[CafeteriaItem]):
         """
         Orders the selected item from the user and removes it from the cafeteria stock.
         """
-        ordered_items = self.__order_items(self.menu)
+        ordered_items = self.__order_items(items)
         return self.__subtract_stock(ordered_items)
 
     def __subtract_stock(self, cart_items: list[CafeteriaItem]):
@@ -174,8 +186,10 @@ class UserflowService:
                 item.Stock = user_input
                 self.cart_result.append(item)
             else:
-                item.Stock += user_input
+                cart_item = next((x for x in self.cart_result if x.Id == item.Id), None)
+                cart_item.Stock += user_input
             self.cafeteria_item_service.subtract_from_stock(item, menu_list_copy, user_input)
+        self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         return self.cart_result
 
     def __add_stock(self, cart_items: list[CafeteriaItem]):
@@ -198,6 +212,7 @@ class UserflowService:
                 item.Stock -= user_input
                 cart_items_updated.append(item)
             self.cafeteria_item_service.add_to_stock(item, menu_list_copy, user_input)
+        self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         return cart_items_updated
 
     def __order_items(self, menu_items: list[CafeteriaItem]):

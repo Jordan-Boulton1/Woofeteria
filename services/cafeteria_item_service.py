@@ -1,3 +1,4 @@
+from tabulate import tabulate
 from dataclasses import dataclass
 
 from entities.cafeteria_item import CafeteriaItem
@@ -11,11 +12,9 @@ class CafeteriaItemService:
         self.price_converter = PriceConverter()
 
     def print_cafeteria_menu(self, menu: list[CafeteriaItem]):
-        """
-        Prints the menu to the console.
-        """
-        for item in menu:
-            print(f"{item.Id}. {item.Name} - £{self.price_converter.format_price(item.Price)} | Stock - x{item.Stock}")
+        headers = ["ID", "Name", "Price", "Stock"]
+        table1 = tabulate(menu, headers=headers, tablefmt="pretty")
+        print(table1)
 
     def get_cafeteria_menu(self):
         """
@@ -46,12 +45,12 @@ class CafeteriaItemService:
                         input_text,
                         True).title()
                     item = self.__handle_update_value(item_name, item)
-                    validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item.Name, True)
+                    validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item.Name,
+                                                                                                         True)
                     item = self.__handle_update_value(validated_item_quantity, item)
                     validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item.Name, True)
                     item = self.__handle_update_value(validated_item_price, item)
         return self.cafeteria_items
-
 
     def __handle_update_value(self, user_input, item: CafeteriaItem):
         if user_input != "Skip":
@@ -101,3 +100,13 @@ class CafeteriaItemService:
             CafeteriaItem(3, "Cheeky Cheese Paws", 1.80, 10),
             CafeteriaItem(4, "Pup Cake", 2.00, 10)]
         return menu
+
+    def __cafeteria_menu_table(self):
+        table_data = [["ID", "Name", "Price", "Stock"],
+                      ["1", "Woofin", 2.50, 10],
+                      ["2", "Paw Cake", 3.20, 10],
+                      ["3", "Cheeky Cheese Paws", 1.80, 10],
+                      ["4", "Pup Cake", 2.00, 10]]
+        table1 = tabulate(table_data, headers="firstrow")
+
+        return table1
