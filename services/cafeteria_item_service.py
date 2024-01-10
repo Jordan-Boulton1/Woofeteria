@@ -13,7 +13,11 @@ class CafeteriaItemService:
 
     def print_cafeteria_menu(self, menu: list[CafeteriaItem]):
         headers = ["ID", "Name", "Price", "Stock"]
-        table1 = tabulate(menu, headers=headers, tablefmt="pretty")
+        table_items = []
+        for item in menu:
+            table_item = [item.Id, item.Name, f"£ {item.Price:.2f}", item.Stock]
+            table_items.append(table_item)
+        table1 = tabulate(table_items, headers=headers, tablefmt="pretty")
         print(table1)
 
     def get_cafeteria_menu(self):
@@ -87,7 +91,6 @@ class CafeteriaItemService:
     def recalculate_ids(self, menu_list: list[CafeteriaItem]):
         for index, item in enumerate(menu_list, start=1):
             item.Id = index
-
         return menu_list
 
     def __populate_cafeteria_menu(self):
