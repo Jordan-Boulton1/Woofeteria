@@ -1,3 +1,4 @@
+from infrastructure.helpers.color_helper import ColorHelper
 from infrastructure.helpers.json_file_helper import JsonFileHelper
 from infrastructure.validators.user_input_validator import UserInputValidator
 from services.cafeteria_item_service import CafeteriaItemService
@@ -35,7 +36,7 @@ class AdminService:
         is_flow_continued = False
         while True:
             self.cafeteria_item_service.print_cafeteria_menu(self.cafeteria_item_service.get_cafeteria_menu())
-            user_input = input("How would you like to edit the menu? (Add/Update/Remove/Exit)")
+            user_input = input(f"How would you like to edit the menu?{ColorHelper.color_add_update_remove_exit_text()}")
             if user_input.capitalize() == "Add":
                 result = False, self.__handle_add()
                 is_flow_continued = self.__continue_or_complete_flow()
@@ -49,7 +50,7 @@ class AdminService:
                 result = False, self.menu
                 is_flow_continued = False
             else:
-                print("The input entered is not valid. Please try using (Add/Update/Remove/Exit)")
+                print(f"The input entered is not valid. Please try using{ColorHelper.color_add_update_remove_exit_text()}")
                 is_flow_continued = True
             if is_flow_continued:
                 continue
@@ -89,7 +90,7 @@ class AdminService:
     def __continue_or_complete_flow():
         result = False
         while True:
-            user_input = input("Do you want to continue editing the menu? (Y/N)")
+            user_input = input(f"Do you want to continue editing the menu? {ColorHelper.color_yes_no_text()}")
             if user_input.capitalize() == "Y":
                 result = True
                 break

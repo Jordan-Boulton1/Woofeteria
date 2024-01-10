@@ -47,7 +47,7 @@ class UserflowService:
             cart = self.cart_service.add_to_cart(cart_items)
             while True:
                 user_input = input(f"Are you finished with your order?"
-                                   f"{ColorHelper.color_yes_no_text()} ")
+                                    f" {ColorHelper.color_yes_no_text()} ")
                 if user_input.capitalize() == "Y":
                     self.__complete_user_flow(cart)
                     break
@@ -92,7 +92,7 @@ class UserflowService:
     def __show_options(self, cart: Cart):
         result = False
         while True:
-            user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove) ")
+            user_input = input(f"Would you like to add or remove item(s) from your cart? {ColorHelper.color_add_remove_text()} ")
             if user_input.capitalize() == "Add":
                 self.__add_to_cart(cart)
                 result = self.__handle_continue_flow()
@@ -102,7 +102,7 @@ class UserflowService:
                 result = self.__handle_continue_flow()
                 break
             else:
-                print("The input entered is not valid. Please try using (Add/Remove)")
+                print(f"The input entered is not valid. Please try using {ColorHelper.color_add_remove_text()}")
         return result
 
     def __handle_continue_flow(self):
