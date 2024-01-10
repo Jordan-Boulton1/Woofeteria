@@ -95,18 +95,12 @@ class CafeteriaItemService:
         Populates the menu with initial values.
         """
         menu = [
-            CafeteriaItem(1, "Woofin", 2.50, 10),
+            CafeteriaItem(1, "Waggy Woofin", 2.50, 10),
             CafeteriaItem(2, "Paw Cake", 3.20, 10),
-            CafeteriaItem(3, "Cheeky Cheese Paws", 1.80, 10),
-            CafeteriaItem(4, "Pup Cake", 2.00, 10)]
+            CafeteriaItem(3, "Cheeky Cheese Paw", 1.80, 10),
+            CafeteriaItem(4, "Barky Bacon Stick", 2.00, 10),
+            CafeteriaItem(5, "Sonny's Soup", 1.40, 10),
+            CafeteriaItem(6, "Alfie's Apple Tart", 2.50, 10),
+            CafeteriaItem(7, "Barkie", 0.80, 10),
+            CafeteriaItem(8, "Storm's Special Chicken Stew", 4.20, 10)]
         return menu
-
-    def __cafeteria_menu_table(self):
-        table_data = [["ID", "Name", "Price", "Stock"],
-                      ["1", "Woofin", 2.50, 10],
-                      ["2", "Paw Cake", 3.20, 10],
-                      ["3", "Cheeky Cheese Paws", 1.80, 10],
-                      ["4", "Pup Cake", 2.00, 10]]
-        table1 = tabulate(table_data, headers="firstrow")
-
-        return table1

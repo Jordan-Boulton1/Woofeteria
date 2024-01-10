@@ -73,44 +73,54 @@ class UserflowService:
         If the user provides unexpected inputs, the user will be prompted with a message stating that the input was not
         valid.
         """
+        is_flow_continued = True
         while True:
             if user_input.capitalize() == "Y":
+                is_flow_continued = False
                 self.__complete_user_flow(cart)
-                break
             elif user_input.capitalize() == "N":
                 print("Your current order: ")
                 self.cart_service.print_cart(cart)
-
-                while True:
-                    user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove) ")
-                    if user_input.capitalize() == "Add".capitalize():
-                        self.__add_to_cart(cart)
-                        self.__handle_continue_flow(cart)
-                        break
-                    elif user_input.capitalize() == "Remove".capitalize():
-                        self.__remove_from_cart(cart)
-                        self.__handle_continue_flow(cart)
-                        break
-                    else:
-                        print("The input entered is not valid. Please try using (Add/Remove) ")
+                is_flow_continued = self.__show_options(cart)
+            if is_flow_continued:
+                continue
             else:
-                print(f"The input entered is not valid. Please try using {ColorHelper.color_yes_no_text()} ")
+                self.__complete_user_flow(cart)
+                break
 
-    def __handle_continue_flow(self, cart: Cart):
+
+    def __show_options(self, cart: Cart):
+        result = False
+        while True:
+            user_input = input("Would you like to add or remove item(s) from your cart? (Add/Remove) ")
+            if user_input.capitalize() == "Add":
+                self.__add_to_cart(cart)
+                result = self.__handle_continue_flow()
+                break
+            elif user_input.capitalize() == "Remove":
+                self.__remove_from_cart(cart)
+                result = self.__handle_continue_flow()
+                break
+            else:
+                print("The input entered is not valid. Please try using (Add/Remove)")
+        return result
+
+    def __handle_continue_flow(self):
         """
         Handles the continuation of the ordering flow and ensures that the user can only provide a valid input, "Y" or
         "N".
         """
+        result = True
         while True:
             user_input = input(f"Are you finished with your order? {ColorHelper.color_yes_no_text()} ")
             if user_input.capitalize() == "Y":
-                self.__complete_user_flow(cart)
+                result = False
                 break
             elif user_input.capitalize() == "N":
-                self.__continue_flow(user_input, cart)
                 break
             else:
                 print(f"The input entered is not valid. Please try using{ColorHelper.color_yes_no_text()} ")
+        return result
 
     def __complete_user_flow(self, cart: Cart):
         """
