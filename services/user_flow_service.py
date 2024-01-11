@@ -194,7 +194,10 @@ class UserflowService:
                 self.cart_result.append(item)
             else:
                 cart_item = next((x for x in self.cart_result if x.Id == item.Id), None)
-                cart_item.Stock += user_input
+                if menu_item.Stock == 0:
+                    continue
+                else:
+                    cart_item.Stock += user_input
             self.cafeteria_item_service.subtract_from_stock(item, menu_list_copy, user_input)
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         return self.cart_result
