@@ -35,13 +35,13 @@ class CafeteriaItemService:
             item_id = last_item.Id + 1
             item_name = UserInputValidator.validate_user_input_is_correct_item_name(self.cafeteria_items,
                                                                                     input_text).title()
-            validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item_name)
+            validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item_name, False)
             validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item_name)
             item = CafeteriaItem(item_id, item_name, validated_item_price, validated_item_quantity)
             self.cafeteria_items.append(item)
         return self.cafeteria_items
 
-    def update_items(self, item_ids: list[int]):
+    def update_items(self, item_ids: list[int], is_admin: bool = False):
         for item in self.cafeteria_items:
             for item_id in item_ids:
                 if item.Id == item_id:
@@ -52,9 +52,9 @@ class CafeteriaItemService:
                         True).title()
                     item = self.__handle_update_value(item_name, item)
                     validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item.Name,
-                                                                                                         True)
+                                                                                                         True, is_admin)
                     item = self.__handle_update_value(validated_item_quantity, item)
-                    validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item.Name, True)
+                    validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item.Name, True, is_admin)
                     item = self.__handle_update_value(validated_item_price, item)
         return self.cafeteria_items
 

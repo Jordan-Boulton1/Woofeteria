@@ -1,4 +1,6 @@
 import re
+import colorama
+from colorama import Style
 from dataclasses import dataclass
 from entities.cafeteria_item import CafeteriaItem
 
@@ -120,10 +122,13 @@ class UserInputValidator:
         return user_input
 
     @staticmethod
-    def validate_user_input_is_correct_quantity(item_name: str, is_updating: bool = False):
+    def validate_user_input_is_correct_quantity(item_name: str, is_updating: bool = False, is_admin: bool = False):
         result = ""
+        info_text = f"Please enter the amount of {item_name} you would like to add to the menu: "
+        if is_admin:
+            info_text = f"Please enter the amount of {item_name} you would like to add to the menu, or enter {Style.BRIGHT}'Skip'{Style.RESET_ALL}:  "
         while True:
-            item_quantity = input(f"Please enter the amount of {item_name} you would ike to add to the menu: ")
+            item_quantity = input(info_text)
             if is_updating and item_quantity.capitalize() == "Skip":
                 result = "Skip"
                 break
@@ -136,10 +141,13 @@ class UserInputValidator:
         return result
 
     @staticmethod
-    def validate_user_input_is_correct_price(item_name: str, is_updating: bool = False):
+    def validate_user_input_is_correct_price(item_name: str, is_updating: bool = False, is_admin: bool = False):
         result = ""
+        info_text = f"Please enter the price for one {item_name}: "
+        if is_admin:
+            info_text = f"Please enter the price for one {item_name} or enter {Style.BRIGHT}'Skip'{Style.RESET_ALL}: "
         while True:
-            item_price = input(f"Please enter the price for one {item_name}: ")
+            item_price = input(info_text)
             if is_updating and item_price.capitalize() == "Skip":
                 result = "Skip"
                 break

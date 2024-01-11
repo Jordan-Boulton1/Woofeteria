@@ -61,7 +61,7 @@ class AdminService:
     def __handle_update(self):
         user_input = UserInputValidator.validate_input_before_parsing(self.menu, False, True)
         item_ids = UserInputValidator.create_array_from_user_input(user_input)
-        updated_menu = self.cafeteria_item_service.update_items(item_ids)
+        updated_menu = self.cafeteria_item_service.update_items(item_ids, True)
         self.menu = updated_menu
         return self.menu
 
