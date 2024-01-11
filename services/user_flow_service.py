@@ -129,9 +129,13 @@ class UserflowService:
         If the user enters a value that does not match the total price of the cart, the user will be shown an error
         message stating that the value they have entered does not match the total price of the cart.
         """
-        formatted_price = self.price_converter.format_price(cart.TotalPrice)
-        info_text = f"That's great, your total price is £{formatted_price}"
+
         while True:
+            formatted_price = self.price_converter.format_price(cart.TotalPrice)
+            info_text = f"That's great, your total price is £{formatted_price}"
+            if len(cart.Items) == 0:
+                print("Thanks for visiting Woofeteria, have a pawesome day!")
+                break
             print(info_text)
             user_input = input("Please enter the amount on screen to complete your purchase. ")
             is_user_input_valid = UserInputValidator.validate_user_input_is_a_decimal(user_input)
@@ -142,7 +146,7 @@ class UserflowService:
                 print("What you have entered does not match the total expected price. Please try again. ")
                 info_text = f"Your total price is £{formatted_price}"
             else:
-                print("Thank you, have a woofin day")
+                print("Thank you, have a pawesome day")
                 break
 
     def __add_to_cart(self, cart: Cart):
