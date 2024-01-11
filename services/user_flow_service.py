@@ -224,7 +224,10 @@ class UserflowService:
                 continue
             else:
                 item.Stock -= user_input
-                cart_items_updated.append(item)
+                if item.Stock == 0:
+                    continue
+                else:
+                    cart_items_updated.append(item)
             self.cafeteria_item_service.add_to_stock(item, menu_list_copy, user_input)
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         return cart_items_updated
