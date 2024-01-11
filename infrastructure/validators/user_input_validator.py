@@ -1,5 +1,4 @@
 import re
-import colorama
 from colorama import Style
 from dataclasses import dataclass
 from entities.cafeteria_item import CafeteriaItem
