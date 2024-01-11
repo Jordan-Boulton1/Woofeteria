@@ -1,11 +1,8 @@
 import copy
-import colorama
 from dataclasses import dataclass
-from colorama import Fore, Back, Style
 
 from infrastructure.helpers.color_helper import ColorHelper
 
-colorama.init()
 
 from entities.cafeteria_item import CafeteriaItem
 from entities.cart import Cart
@@ -187,7 +184,7 @@ class UserflowService:
         If the item id is already in the unique set, we simply add the user input to the stock of the existing item.
         Finally, we subtract the ordered item from the stock of the cafeteria.
         """
-        menu_list_copy = copy.deepcopy(self.cafeteria_item_service.get_cafeteria_menu())
+        menu_list_copy = copy.deepcopy(self.menu)
         for item in cart_items:
             menu_item = next((x for x in menu_list_copy if x.Id == item.Id), None)
             user_input = int(UserInputValidator.validate_input_for_items(menu_item))
@@ -211,7 +208,7 @@ class UserflowService:
         we subtract from the quantity of the item in the user cart, we add it to the array that we created, and add the
         item back to the cafeteria stock.
         """
-        menu_list_copy = copy.deepcopy(self.cafeteria_item_service.get_cafeteria_menu())
+        menu_list_copy = copy.deepcopy(self.menu)
         cart_items_updated = []
         for item in cart_items:
             user_input = int(UserInputValidator.validate_input_for_items(item, True))

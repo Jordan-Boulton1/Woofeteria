@@ -1,6 +1,5 @@
-from dataclasses import dataclass
 import re
-
+from dataclasses import dataclass
 from entities.cafeteria_item import CafeteriaItem
 
 
@@ -101,6 +100,9 @@ class UserInputValidator:
             is_user_input_valid = UserInputValidator.validate_user_input_is_a_number(user_input)
             if not is_user_input_valid:
                 print("You didn't enter a number. Please try again.")
+            elif item.Stock == 0:
+                print(f"Sorry {item.Name} is out of stock. Please try again.")
+                break
             elif item.Stock < int(user_input):
                 print("Sorry you have tried to order more than we have in stock.")
             else:

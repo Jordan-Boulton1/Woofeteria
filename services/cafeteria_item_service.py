@@ -1,3 +1,5 @@
+import colorama
+from colorama import Style
 from tabulate import tabulate
 from dataclasses import dataclass
 
@@ -43,7 +45,7 @@ class CafeteriaItemService:
         for item in self.cafeteria_items:
             for item_id in item_ids:
                 if item.Id == item_id:
-                    input_text = f"Please enter a new name for {item.Name} or type 'Skip' not to change it."
+                    input_text = f"Please enter a new name for {item.Name} or type '{Style.BRIGHT}Skip{Style.RESET_ALL}' not to change it."
                     item_name = UserInputValidator.validate_user_input_is_correct_item_name(
                         self.cafeteria_items,
                         input_text,
