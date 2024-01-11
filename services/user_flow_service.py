@@ -58,7 +58,6 @@ class UserflowService:
         """
         Shows the menu
         """
-        print("Food")
         self.cafeteria_item_service.print_cafeteria_menu(self.menu)
 
     def __continue_flow(self, user_input: str, cart: Cart):
