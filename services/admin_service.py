@@ -16,7 +16,7 @@ class AdminService:
             if admin_info["admin_user"] != user_input:
                 return False, None
             else:
-                user_input = input("Please enter the secret password: ")
+                user_input = input("Please enter the secret password:\n")
                 result = self.__show_admin_flow(user_input, admin_info["admin_password"])
                 return result
         except FileNotFoundError:
@@ -36,7 +36,7 @@ class AdminService:
         is_flow_continued = False
         while True:
             self.cafeteria_item_service.print_cafeteria_menu(self.cafeteria_item_service.get_cafeteria_menu())
-            user_input = input(f"How would you like to edit the menu?{ColorHelper.color_add_update_remove_exit_text()}")
+            user_input = input(f"How would you like to edit the menu?{ColorHelper.color_add_update_remove_exit_text()}\n")
             if user_input.capitalize() == "Add":
                 result = False, self.__handle_add()
                 is_flow_continued = self.__continue_or_complete_flow()
@@ -74,7 +74,7 @@ class AdminService:
 
     def __handle_add(self):
         while True:
-            user_input = input("How many items would you like to add? ")
+            user_input = input("How many items would you like to add?\n")
             validate_user_input = UserInputValidator.validate_user_input_is_a_number(user_input)
             if not validate_user_input:
                 print("Please enter a valid input")
@@ -90,7 +90,7 @@ class AdminService:
     def __continue_or_complete_flow():
         result = False
         while True:
-            user_input = input(f"Do you want to continue editing the menu? {ColorHelper.color_yes_no_text()}")
+            user_input = input(f"Do you want to continue editing the menu? {ColorHelper.color_yes_no_text()}\n")
             if user_input.capitalize() == "Y":
                 result = True
                 break

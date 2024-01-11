@@ -30,7 +30,7 @@ class CafeteriaItemService:
 
     def add_items_to_menu(self, amount_of_items: int):
         last_item = self.cafeteria_items[-1]
-        input_text = "Please enter a name for the new cafeteria item: "
+        input_text = "Please enter a name for the new cafeteria item:\n"
         for i in range(amount_of_items):
             item_id = last_item.Id + 1
             item_name = UserInputValidator.validate_user_input_is_correct_item_name(self.cafeteria_items,
@@ -45,7 +45,7 @@ class CafeteriaItemService:
         for item in self.cafeteria_items:
             for item_id in item_ids:
                 if item.Id == item_id:
-                    input_text = f"Please enter a new name for {item.Name} or type '{Style.BRIGHT}Skip{Style.RESET_ALL}' not to change it."
+                    input_text = f"Please enter a new name for {item.Name} or type '{Style.BRIGHT}Skip{Style.RESET_ALL}' not to change it.\n"
                     item_name = UserInputValidator.validate_user_input_is_correct_item_name(
                         self.cafeteria_items,
                         input_text,

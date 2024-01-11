@@ -44,7 +44,7 @@ class UserflowService:
             cart = self.cart_service.add_to_cart(cart_items)
             while True:
                 user_input = input(f"Are you finished with your order?"
-                                    f" {ColorHelper.color_yes_no_text()} ")
+                                    f" {ColorHelper.color_yes_no_text()}\n")
                 if user_input.capitalize() == "Y":
                     self.__complete_user_flow(cart)
                     break
@@ -89,7 +89,7 @@ class UserflowService:
     def __show_options(self, cart: Cart):
         result = False
         while True:
-            user_input = input(f"Would you like to add or remove item(s) from your cart? {ColorHelper.color_add_remove_text()} ")
+            user_input = input(f"Would you like to add or remove item(s) from your cart? {ColorHelper.color_add_remove_text()}\n")
             if user_input.capitalize() == "Add":
                 self.__add_to_cart(cart)
                 result = self.__handle_continue_flow()
@@ -109,7 +109,7 @@ class UserflowService:
         """
         result = True
         while True:
-            user_input = input(f"Are you finished with your order? {ColorHelper.color_yes_no_text()} ")
+            user_input = input(f"Are you finished with your order? {ColorHelper.color_yes_no_text()}\n")
             if user_input.capitalize() == "Y":
                 result = False
                 break
@@ -137,7 +137,7 @@ class UserflowService:
                 print("Thanks for visiting Woofeteria, have a pawesome day!")
                 break
             print(info_text)
-            user_input = input("Please enter the amount on screen to complete your purchase. ")
+            user_input = input("Please enter the amount on screen to complete your purchase.\n")
             is_user_input_valid = UserInputValidator.validate_user_input_is_a_decimal(user_input)
             if not is_user_input_valid:
                 print("Please enter a valid input")

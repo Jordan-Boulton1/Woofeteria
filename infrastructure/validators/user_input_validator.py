@@ -66,11 +66,11 @@ class UserInputValidator:
         if is_updating:
             action = "update"
         info_text = (
-            f"Please enter the relevant number from the menu, that corresponds to the item you wish to {action}.\n "
-            f"If you wish to {action} more than one item please separate each item number by comma. ")
+            f"Please enter the relevant number from the menu, that corresponds to the item you wish to {action}.\n"
+            f"If you wish to {action} more than one item please separate each item number by comma.\n")
         if is_removing:
             info_text = ("Which item(s) would you like to remove?\n "
-                         "If you wish to remove more than one item please separate each item number by comma. ")
+                         "If you wish to remove more than one item please separate each item number by comma.\n")
         while True:
             user_input = input(info_text)
             first_item = cafeteria_items[0]
@@ -98,7 +98,7 @@ class UserInputValidator:
         if item is None:
             print("Sorry, we could find an item with that Id")
         while True:
-            user_input = input(f"How many {item.Name} would you like to {info_text}? ")
+            user_input = input(f"How many {item.Name} would you like to {info_text}?\n")
             is_user_input_valid = UserInputValidator.validate_user_input_is_a_number(user_input)
             if not is_user_input_valid:
                 print("You didn't enter a number. Please try again.")
@@ -114,7 +114,7 @@ class UserInputValidator:
     @staticmethod
     def validate_user_name():
         while True:
-            user_input = input("What is your name? ")
+            user_input = input("What is your name?\n")
             if not UserInputValidator.__validate_user_input_is_name(user_input):
                 print("Hmm, that didn't quite hit the bark. Try again.")
             else:
@@ -124,9 +124,9 @@ class UserInputValidator:
     @staticmethod
     def validate_user_input_is_correct_quantity(item_name: str, is_updating: bool = False, is_admin: bool = False):
         result = ""
-        info_text = f"Please enter the amount of {item_name} you would like to add to the menu: "
+        info_text = f"Please enter the amount of {item_name} you would like to add to the menu:\n"
         if is_admin:
-            info_text = f"Please enter the amount of {item_name} you would like to add to the menu, or enter {Style.BRIGHT}'Skip'{Style.RESET_ALL}:  "
+            info_text = f"Please enter the amount of {item_name} you would like to add to the menu, or enter {Style.BRIGHT}'Skip'{Style.RESET_ALL}:\n"
         while True:
             item_quantity = input(info_text)
             if is_updating and item_quantity.capitalize() == "Skip":
@@ -143,9 +143,9 @@ class UserInputValidator:
     @staticmethod
     def validate_user_input_is_correct_price(item_name: str, is_updating: bool = False, is_admin: bool = False):
         result = ""
-        info_text = f"Please enter the price for one {item_name}: "
+        info_text = f"Please enter the price for one {item_name}:\n"
         if is_admin:
-            info_text = f"Please enter the price for one {item_name} or enter {Style.BRIGHT}'Skip'{Style.RESET_ALL}: "
+            info_text = f"Please enter the price for one {item_name} or enter {Style.BRIGHT}'Skip'{Style.RESET_ALL}:\n"
         while True:
             item_price = input(info_text)
             if is_updating and item_price.capitalize() == "Skip":
