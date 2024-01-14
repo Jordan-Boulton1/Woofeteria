@@ -35,7 +35,7 @@ class AdminService:
         result = False, None
         is_flow_continued = False
         while True:
-            self.cafeteria_item_service.print_cafeteria_menu(self.cafeteria_item_service.get_cafeteria_menu())
+            self.cafeteria_item_service.print_cafeteria_menu(self.menu)
             user_input = input(f"How would you like to edit the menu?{ColorHelper.color_add_update_remove_exit_text()}\n")
             if user_input.capitalize() == "Add":
                 result = False, self.__handle_add()
@@ -61,8 +61,7 @@ class AdminService:
     def __handle_update(self):
         user_input = UserInputValidator.validate_input_before_parsing(self.menu, False, True)
         item_ids = UserInputValidator.create_array_from_user_input(user_input)
-        updated_menu = self.cafeteria_item_service.update_items(item_ids, True)
-        self.menu = updated_menu
+        self.menu = self.cafeteria_item_service.update_items(item_ids, self.menu, True)
         return self.menu
 
     def __handle_remove(self):
@@ -81,8 +80,7 @@ class AdminService:
             elif validate_user_input and int(user_input) == 0:
                 print(f"You cannot add {user_input} items")
             else:
-                updated_menu = self.cafeteria_item_service.add_items_to_menu(int(user_input))
-                self.menu = updated_menu
+                self.menu = self.cafeteria_item_service.add_items_to_menu(int(user_input), self.menu)
                 break
         return self.menu
 
