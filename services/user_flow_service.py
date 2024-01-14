@@ -191,6 +191,9 @@ class UserflowService:
         menu_list_copy = copy.deepcopy(self.menu)
         for item in cart_items:
             menu_item = next((x for x in menu_list_copy if x.Id == item.Id), None)
+            if item.Stock == 0:
+                print(f"Sorry {item.Name} is out of stock.")
+                continue
             user_input = int(UserInputValidator.validate_input_for_items(menu_item))
             if item.Id not in self.unique_set:
                 self.unique_set.add(item.Id)

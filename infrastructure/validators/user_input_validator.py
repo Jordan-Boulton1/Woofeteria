@@ -87,12 +87,12 @@ class UserInputValidator:
     @staticmethod
     def validate_input_for_items(item: CafeteriaItem, is_removing: bool = False):
         """
-        Replaces the displayed text in the console depending on if the user is removing or adding an item then creates
-        a while loop that prompts the user how much of the selected item they wish to order or remove and validates if
-        the provided input contains integers and if more than one they are separated by comma.
-        If the validation fails the user will be prompted with a message stating the input is invalid.
-        Otherwise, the loop will break and return the user input.
-        """
+               Replaces the displayed text in the console depending on if the user is removing or adding an item then creates
+               a while loop that prompts the user how much of the selected item they wish to order or remove and validates if
+               the provided input contains integers and if more than one they are separated by comma.
+               If the validation fails the user will be prompted with a message stating the input is invalid.
+               Otherwise, the loop will break and return the user input.
+               """
         info_text = "order"
         if is_removing:
             info_text = "remove"
@@ -103,11 +103,6 @@ class UserInputValidator:
             is_user_input_valid = UserInputValidator.validate_user_input_is_a_number(user_input)
             if not is_user_input_valid:
                 print("You didn't enter a valid input. Please try again.")
-            elif item.Stock == 0:
-                print(f"Sorry {item.Name} is out of stock. Please try again.")
-                break
-            elif item.Stock < int(user_input):
-                print("Sorry you have tried to order more than we have in stock.")
             else:
                 break
         return user_input
