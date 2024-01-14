@@ -49,6 +49,8 @@ class UserInputValidator:
         """
         if len(user_input) == 0:
             return False
+        elif user_input == "0" or user_input == "0.0":
+            return False
         elif user_input.replace(".", "").isnumeric():
             return True
         else:
