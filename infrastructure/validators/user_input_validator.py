@@ -197,5 +197,5 @@ class UserInputValidator:
     def __validate_user_input_is_name(user_input: str):
         if len(user_input) == 0:
             return False
-        pattern = "^(?=.{2,100}$)[^\W\d_]+(?:[-' ][^\W\d_]+)*[.?!]?$"
+        pattern = re.compile(r'^[A-Za-z\s\'-]+$')
         return bool(re.match(pattern, user_input))
