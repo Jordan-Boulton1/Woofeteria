@@ -3,7 +3,6 @@ from dataclasses import dataclass
 
 from infrastructure.helpers.color_helper import ColorHelper
 
-
 from entities.cafeteria_item import CafeteriaItem
 from entities.cart import Cart
 from infrastructure.enums.enum_icon import Icon
@@ -44,7 +43,7 @@ class UserflowService:
             cart = self.cart_service.add_to_cart(cart_items)
             while True:
                 user_input = input(f"Are you finished with your order?"
-                                    f" {ColorHelper.color_yes_no_text()}\n")
+                                   f" {ColorHelper.color_yes_no_text()}\n")
                 if user_input.capitalize() == "Y":
                     self.__complete_user_flow(cart)
                     break
@@ -75,8 +74,6 @@ class UserflowService:
                 is_flow_continued = False
                 self.__complete_user_flow(cart)
             elif user_input.capitalize() == "N":
-                print("Your current order: ")
-                self.cart_service.print_cart(cart)
                 is_flow_continued = self.__show_options(cart)
             if is_flow_continued:
                 continue
@@ -84,17 +81,19 @@ class UserflowService:
                 self.__complete_user_flow(cart)
                 break
 
-
     def __show_options(self, cart: Cart):
         result = False
         while True:
-            user_input = input(f"Would you like to add or remove item(s) from your cart? {ColorHelper.color_add_remove_text()}\n")
+            print("Your current order: ")
+            self.cart_service.print_cart(cart)
+            user_input = input(
+                f"Would you like to add or remove item(s) from your cart? {ColorHelper.color_add_remove_text()}\n")
             if user_input.capitalize() == "Add":
-                self.__add_to_cart(cart)
+                cart = self.__add_to_cart(cart)
                 result = self.__handle_continue_flow()
                 break
             elif user_input.capitalize() == "Remove":
-                self.__remove_from_cart(cart)
+                cart = self.__remove_from_cart(cart)
                 result = self.__handle_continue_flow()
                 break
             else:
@@ -156,7 +155,7 @@ class UserflowService:
         self.__show_menu()
         cart_items = self.__handle_order(self.menu)
         cart.Items = cart_items
-        self.cart_service.update_cart(cart, cart.Items)
+        return self.cart_service.update_cart(cart, cart.Items)
 
     def __remove_from_cart(self, cart: Cart):
         """
@@ -168,8 +167,21 @@ class UserflowService:
         user_input = UserInputValidator.validate_input_before_parsing(cart.Items, True)
         item_ids = UserInputValidator.create_array_from_user_input(user_input)
         cart_items = [item for item in cart.Items if item.Id in item_ids]
-        cart.Items = self.__add_stock(cart_items)
-        self.cart_service.update_cart(cart, cart.Items)
+        updated_items = self.__add_stock(cart_items)
+        if len(updated_items) == 0:
+            self.unique_set.clear()
+            cart.Items = updated_items
+        else:
+            for cart_item in cart_items:
+                for updated_item in updated_items:
+                    if cart_item.Id == updated_item.Id:
+                        if updated_item.Stock == 0:
+                            self.unique_set.remove(cart_item.Id)
+                            cart.Items.remove(cart_item)
+                        else:
+                            cart.Items.remove(cart_item)
+                            cart.Items.append(updated_item)
+        return self.cart_service.update_cart(cart, cart.Items)
 
     def __handle_order(self, items: list[CafeteriaItem]):
         """
@@ -227,10 +239,7 @@ class UserflowService:
                 continue
             else:
                 item.Stock -= user_input
-                if item.Stock == 0:
-                    continue
-                else:
-                    cart_items_updated.append(item)
+                cart_items_updated.append(item)
             self.cafeteria_item_service.add_to_stock(item, menu_list_copy, user_input)
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         return cart_items_updated
