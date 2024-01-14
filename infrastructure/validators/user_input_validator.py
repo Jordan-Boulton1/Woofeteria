@@ -2,6 +2,7 @@ import re
 from colorama import Style
 from dataclasses import dataclass
 from entities.cafeteria_item import CafeteriaItem
+from infrastructure.helpers.price_converter import PriceConverter
 
 
 @dataclass
@@ -25,7 +26,8 @@ class UserInputValidator:
         """
         if len(user_input) == 0:
             return False
-        pattern = re.compile(r'^(?:[' + str(start) + '-' + str(end) + '](?:, ?[' + str(start) + '-' + str(end) + '])*)?$')
+        pattern = re.compile(
+            r'^(?:[' + str(start) + '-' + str(end) + '](?:, ?[' + str(start) + '-' + str(end) + '])*)?$')
         return bool(re.match(pattern, user_input))
 
     @staticmethod
@@ -47,17 +49,23 @@ class UserInputValidator:
         Replaces the "." in the user input string with an empty string and checks if the result of that is numeric.
         If it is numeric it returns true otherwise, it returns false.
         """
-        if len(user_input) == 0:
-            return False
-        elif user_input == "0" or user_input == "0.0":
-            return False
-        elif user_input.replace(".", "").isnumeric():
-            return True
-        else:
+        try:
+            integral, fractional = user_input.split('.')
+            number = float(user_input)
+            if len(fractional) != 2:
+                return False
+            elif number <= 0:
+                return False
+            else:
+                return True
+        except ValueError:
             return False
 
+
+
     @staticmethod
-    def validate_input_before_parsing(cafeteria_items: list[CafeteriaItem], is_removing: bool = False, is_updating: bool = False):
+    def validate_input_before_parsing(cafeteria_items: list[CafeteriaItem], is_removing: bool = False,
+                                      is_updating: bool = False):
         """
         Replaces the displayed text in the console depending on if the user is removing or adding an item then creates a
         while loop which validates if the provided input contains integers and if more than one they are separated by
@@ -173,11 +181,9 @@ class UserInputValidator:
                 break
         return item_name
 
-
     @staticmethod
     def __validate_user_input_is_name(user_input: str):
         if len(user_input) == 0:
             return False
         pattern = "^(?=.{2,100}$)[^\W\d_]+(?:[-' ][^\W\d_]+)*[.?!]?$"
         return bool(re.match(pattern, user_input))
-

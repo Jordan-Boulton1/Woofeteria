@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 @dataclass
 class PriceConverter:
-    def format_price(self, price: float):
+    @staticmethod
+    def format_price(price: float):
         """
         Formats the price to 2 decimal places.
         """
