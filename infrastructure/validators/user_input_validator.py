@@ -36,6 +36,8 @@ class UserInputValidator:
         """
         if len(user_input) == 0:
             return False
+        elif user_input == "0":
+            return False
         return bool(user_input.isdigit())
 
     @staticmethod
@@ -100,7 +102,7 @@ class UserInputValidator:
             user_input = input(f"How many {item.Name} would you like to {info_text}?\n")
             is_user_input_valid = UserInputValidator.validate_user_input_is_a_number(user_input)
             if not is_user_input_valid:
-                print("You didn't enter a number. Please try again.")
+                print("You didn't enter a valid input. Please try again.")
             elif item.Stock == 0:
                 print(f"Sorry {item.Name} is out of stock. Please try again.")
                 break
