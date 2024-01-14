@@ -15,6 +15,20 @@ class UserInputValidator:
         return [int(x) for x in user_input.split(',') if x.strip().isdigit()]
 
     @staticmethod
+    def validate_item_ids(items: list[CafeteriaItem]):
+        while True:
+            user_input = UserInputValidator.validate_input_before_parsing(items)
+            item_ids = UserInputValidator.create_array_from_user_input(user_input)
+            menu_ids = [x.Id for x in items]
+            is_input_valid_ids = all(ele in menu_ids for ele in item_ids)
+            if not is_input_valid_ids:
+                print("The value you entered is invalid, please try again.")
+            else:
+                found_items = [item for item in items if item.Id in item_ids]
+                break
+        return found_items
+
+    @staticmethod
     def validate_user_input_is_comma_separated(user_input: str, start: int, end: int):
         """
         If the user is an empty string or whitespace, returns false.
@@ -60,8 +74,6 @@ class UserInputValidator:
                 return True
         except ValueError:
             return False
-
-
 
     @staticmethod
     def validate_input_before_parsing(cafeteria_items: list[CafeteriaItem], is_removing: bool = False,

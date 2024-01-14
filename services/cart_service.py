@@ -9,6 +9,7 @@ from infrastructure.helpers.price_converter import PriceConverter
 class CartService:
     def __init__(self):
         self.price_converter = PriceConverter()
+
     def add_to_cart(self, selected_items: list[CafeteriaItem]):
         """
         Creates a new cart object with the ordered items from the user and calculated quantity and price.
@@ -18,13 +19,14 @@ class CartService:
                     self.__calculate_total_price(selected_items))
         return cart
 
-    def update_cart(self, cart: Cart, selected_items:list[CafeteriaItem]):
+    def update_cart(self, cart: Cart, selected_items: list[CafeteriaItem]):
         """
         Recalculates the total quantity and price of the cart from the newly selected items.
         """
         cart.TotalPrice = self.__calculate_total_price(selected_items)
         cart.TotalQuantity = self.__calculate_total_quantity(selected_items)
         cart.Items = selected_items
+        cart.Items = sorted(cart.Items, key=lambda o: o.Id)
         return cart
 
     def remove_from_cart(self, cart: Cart, item_id: int):
@@ -43,7 +45,6 @@ class CartService:
         for item in cart.Items:
             print(f"{item.Id}. {item.Name} - £{self.price_converter.format_price(item.Price)} - x{item.Stock}")
 
-
     def __calculate_total_quantity(self, selected_items: list[CafeteriaItem]):
         """
         Calculates the total quantity of the cart by using the items inside it.
@@ -61,9 +62,3 @@ class CartService:
             total_price_per_item = selected_item.Price * selected_item.Stock
             total_price_per_item_array.append(total_price_per_item)
         return sum(item for item in total_price_per_item_array)
-
-
-
-
-
-

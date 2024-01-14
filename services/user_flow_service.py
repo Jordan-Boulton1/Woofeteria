@@ -84,23 +84,21 @@ class UserflowService:
     def __show_options(self, cart: Cart):
         result = False
         while True:
-            print("Your current order: ")
-            self.cart_service.print_cart(cart)
             user_input = input(
                 f"Would you like to add or remove item(s) from your cart? {ColorHelper.color_add_remove_text()}\n")
             if user_input.capitalize() == "Add":
-                cart = self.__add_to_cart(cart)
-                result = self.__handle_continue_flow()
+                updated_cart = self.__add_to_cart(cart)
+                result = self.__handle_continue_flow(updated_cart)
                 break
             elif user_input.capitalize() == "Remove":
-                cart = self.__remove_from_cart(cart)
-                result = self.__handle_continue_flow()
+                updated_cart = self.__remove_from_cart(cart)
+                result = self.__handle_continue_flow(updated_cart)
                 break
             else:
                 print(f"The input entered is not valid. Please try using {ColorHelper.color_add_remove_text()}")
         return result
 
-    def __handle_continue_flow(self):
+    def __handle_continue_flow(self, cart: Cart):
         """
         Handles the continuation of the ordering flow and ensures that the user can only provide a valid input, "Y" or
         "N".
@@ -112,6 +110,8 @@ class UserflowService:
                 result = False
                 break
             elif user_input.capitalize() == "N":
+                print("Your current order: ")
+                self.cart_service.print_cart(cart)
                 break
             else:
                 print(f"The input entered is not valid. Please try using{ColorHelper.color_yes_no_text()} ")
@@ -164,10 +164,12 @@ class UserflowService:
         Then an array of integers is created from the user input and that array is used to locate the items in the cart
         after that the item is removed from the cart and added back to the cafeteria stock.
         """
-        user_input = UserInputValidator.validate_input_before_parsing(cart.Items, True)
-        item_ids = UserInputValidator.create_array_from_user_input(user_input)
-        cart_items = [item for item in cart.Items if item.Id in item_ids]
+        cart_items = UserInputValidator.validate_item_ids(cart.Items)
         updated_items = self.__add_stock(cart_items)
+        self.handle_remove_from_cart(cart, cart_items, updated_items)
+        return self.cart_service.update_cart(cart, cart.Items)
+
+    def handle_remove_from_cart(self, cart, cart_items, updated_items):
         if len(updated_items) == 0:
             self.unique_set.clear()
             cart.Items = updated_items
@@ -177,17 +179,19 @@ class UserflowService:
                     if cart_item.Id == updated_item.Id:
                         if updated_item.Stock == 0:
                             self.unique_set.remove(cart_item.Id)
+                            self.cart_result.remove(cart_item)
                             cart.Items.remove(cart_item)
                         else:
                             cart.Items.remove(cart_item)
+                            self.cart_result.remove(cart_item)
                             cart.Items.append(updated_item)
-        return self.cart_service.update_cart(cart, cart.Items)
+                            self.cart_result.append(updated_item)
 
     def __handle_order(self, items: list[CafeteriaItem]):
         """
         Orders the selected item from the user and removes it from the cafeteria stock.
         """
-        ordered_items = self.__order_items(items)
+        ordered_items = UserInputValidator.validate_item_ids(items)
         return self.__subtract_stock(ordered_items)
 
     def __subtract_stock(self, cart_items: list[CafeteriaItem]):
@@ -234,22 +238,8 @@ class UserflowService:
         cart_items_updated = []
         for item in cart_items:
             user_input = int(UserInputValidator.validate_input_for_items(item, True))
-            if item.Stock == 1:
-                self.cafeteria_item_service.add_to_stock(item, menu_list_copy, user_input)
-                continue
-            else:
-                item.Stock -= user_input
-                cart_items_updated.append(item)
+            item.Stock -= user_input
+            cart_items_updated.append(item)
             self.cafeteria_item_service.add_to_stock(item, menu_list_copy, user_input)
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         return cart_items_updated
-
-    def __order_items(self, menu_items: list[CafeteriaItem]):
-        """
-        Adds the ordered items to the cart, and validates that the user has entered integers and if more than one,
-        they are separated by a comma then we create an array of integers from the user input and locate and return
-        the items from the menu by their corresponding id.
-        """
-        user_input = UserInputValidator.validate_input_before_parsing(menu_items)
-        item_ids = UserInputValidator.create_array_from_user_input(user_input)
-        return [item for item in menu_items if item.Id in item_ids]
