@@ -129,6 +129,7 @@ class UserflowService:
         """
 
         while True:
+            self.cart_service.print_cart(cart)
             formatted_price = self.price_converter.format_price(cart.TotalPrice)
             info_text = f"That's great, your total price is £{formatted_price}"
             if len(cart.Items) == 0:
