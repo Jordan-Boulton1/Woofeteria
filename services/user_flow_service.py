@@ -236,6 +236,7 @@ class UserflowService:
                 else:
                     cart_item.Stock += user_input
             self.cafeteria_item_service.subtract_from_stock(item, menu_list_copy, user_input)
+            print(f"You have added x{user_input} {item.Name} to your cart")
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         return self.cart_result
 
@@ -253,6 +254,7 @@ class UserflowService:
         for item in cart_items:
             user_input = int(UserInputValidator.validate_input_for_items(item, True))
             item.Stock -= user_input
+            print(f"You have removed: x{user_input} {item.Name}")
             cart_items_updated.append(item)
             self.cafeteria_item_service.add_to_stock(item, menu_list_copy, user_input)
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
