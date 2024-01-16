@@ -92,7 +92,7 @@ class UserInputValidator:
             f"Please enter the relevant number from the menu, that corresponds to the item you wish to {action}.\n"
             f"If you wish to {action} more than one item please separate each item number by comma.\n")
         if is_removing:
-            info_text = ("Which item(s) would you like to remove?\n "
+            info_text = ("Which item(s) would you like to remove?\n"
                          "If you wish to remove more than one item please separate each item number by comma.\n")
         while True:
             user_input = input(info_text)
@@ -134,7 +134,7 @@ class UserInputValidator:
         while True:
             user_input = input("What is your name?\n")
             if not UserInputValidator.__validate_user_input_is_name(user_input):
-                print("Hmm, that didn't quite hit the bark. Try again.")
+                print(f"Hmm {user_input.title()} didn't quite hit the bark. Try again.")
             else:
                 break
         return user_input

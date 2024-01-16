@@ -1,5 +1,6 @@
 import copy
 from dataclasses import dataclass
+from tabulate import tabulate
 
 from infrastructure.helpers.color_helper import ColorHelper
 
@@ -42,6 +43,7 @@ class UserflowService:
             cart_items = self.__handle_order(self.menu)
             cart = self.cart_service.add_to_cart(cart_items)
             while True:
+                self.print_user_cart(cart)
                 user_input = input(f"Are you finished with your order?"
                                    f" {ColorHelper.color_yes_no_text()}\n")
                 if user_input.capitalize() == "Y":
@@ -84,6 +86,7 @@ class UserflowService:
     def __show_options(self, cart: Cart):
         result = False
         while True:
+            self.print_user_cart(cart)
             user_input = input(
                 f"Would you like to add or remove item(s) from your cart? {ColorHelper.color_add_remove_text()}\n")
             if user_input.capitalize() == "Add":
@@ -105,6 +108,7 @@ class UserflowService:
         """
         result = True
         while True:
+            self.print_user_cart(cart)
             user_input = input(f"Are you finished with your order? {ColorHelper.color_yes_no_text()}\n")
             if user_input.capitalize() == "Y":
                 result = False
@@ -129,25 +133,33 @@ class UserflowService:
         """
 
         while True:
-            self.cart_service.print_cart(cart)
             formatted_price = self.price_converter.format_price(cart.TotalPrice)
-            info_text = f"That's great, your total price is £{formatted_price}"
+            self.print_user_cart(cart)
             if len(cart.Items) == 0:
                 print(f"{Icon.PawIcon.value}Thanks for visiting Woofeteria, have a pawesome day!{Icon.PawIcon.value}")
                 break
-            print(info_text)
-            user_input = input("Please enter the amount on screen to complete your purchase.\n")
+            user_input = input("Please enter the cart total on screen (minus the pound sign) to complete your purchase.\n")
             is_user_input_valid = UserInputValidator.validate_user_input_is_a_decimal(user_input)
             if not is_user_input_valid:
                 print("Please enter a valid input")
-                info_text = f"Your total price is £{formatted_price}"
             elif formatted_price != user_input:
                 print("What you have entered does not match the total expected price. Please try again. ")
-                info_text = f"Your total price is £{formatted_price}"
             else:
                 print(f"{Icon.PawIcon.value}Thank you, have a pawesome day{Icon.PawIcon.value}")
-
                 break
+
+    def print_user_cart(self, cart: Cart):
+        formatted_price = self.price_converter.format_price(cart.TotalPrice)
+        headers = ["ID", "Name", "Price", "Quantity"]
+        table_items = []
+        for cart_item in cart.Items:
+            table_item = [cart_item.Id, cart_item.Name, f"£ {cart_item.Price:.2f}", cart_item.Stock]
+            table_items.append(table_item)
+        cart_table = tabulate(table_items, headers=headers, tablefmt="pretty")
+        print(cart_table)
+        cart_total = print(f"Your cart total is: £{formatted_price}")
+        return cart_total
+
 
     def __add_to_cart(self, cart: Cart):
         """
@@ -181,12 +193,14 @@ class UserflowService:
                         if updated_item.Stock == 0:
                             self.unique_set.remove(cart_item.Id)
                             self.cart_result.remove(cart_item)
-                            cart.Items.remove(cart_item)
+                            if [item for item in cart.Items if item.Id == cart_item.Id]:
+                                cart.Items.remove(cart_item)
                         else:
                             cart.Items.remove(cart_item)
-                            self.cart_result.remove(cart_item)
                             cart.Items.append(updated_item)
-                            self.cart_result.append(updated_item)
+                            if [item for item in self.cart_result if item.Id == cart_item.Id]:
+                                self.cart_result.remove(cart_item)
+                                self.cart_result.append(updated_item)
 
     def __handle_order(self, items: list[CafeteriaItem]):
         """
