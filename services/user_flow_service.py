@@ -176,7 +176,7 @@ class UserflowService:
         Then an array of integers is created from the user input and that array is used to locate the items in the cart
         after that the item is removed from the cart and added back to the cafeteria stock.
         """
-        cart_items = UserInputValidator.validate_item_ids(cart.Items)
+        cart_items = UserInputValidator.validate_item_ids(cart.Items, True)
         updated_items = self.__add_stock(cart_items)
         self.handle_remove_from_cart(cart, cart_items, updated_items)
         return self.cart_service.update_cart(cart, cart.Items)

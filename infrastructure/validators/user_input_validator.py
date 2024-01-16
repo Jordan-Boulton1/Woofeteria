@@ -15,9 +15,9 @@ class UserInputValidator:
         return [int(x) for x in user_input.split(',') if x.strip().isdigit()]
 
     @staticmethod
-    def validate_item_ids(items: list[CafeteriaItem]):
+    def validate_item_ids(items: list[CafeteriaItem], is_removing: bool = False):
         while True:
-            user_input = UserInputValidator.validate_input_before_parsing(items)
+            user_input = UserInputValidator.validate_input_before_parsing(items, is_removing)
             item_ids = UserInputValidator.create_array_from_user_input(user_input)
             menu_ids = [x.Id for x in items]
             is_input_valid_ids = all(ele in menu_ids for ele in item_ids)
@@ -195,7 +195,7 @@ class UserInputValidator:
 
     @staticmethod
     def __validate_user_input_is_name(user_input: str):
-        if len(user_input) == 0:
+        if user_input.isspace():
             return False
-        pattern = re.compile(r'^[A-Za-z\s\'-]+$')
+        pattern = re.compile(r'^[a-zA-Z]+(?:[-\'][a-zA-Z]+)?$')
         return bool(re.match(pattern, user_input))
