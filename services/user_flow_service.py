@@ -32,7 +32,7 @@ class UserflowService:
         If the user provides unexpected inputs, the user will be prompted with a message stating that the input was not
         valid.
         """
-        print(f"{Icon.DogIcon.value} Welcome to Storm's Woofeteria.{Icon.DogIcon.value}")
+        print(f"{Icon.DogIcon.value}  Welcome to Storm's Woofeteria.  {Icon.DogIcon.value}")
         user_input = UserInputValidator.validate_user_name()
         admin_name_provided = self.admin_service.validate_if_admin_name_provided(user_input)
         if not admin_name_provided[0]:
@@ -145,7 +145,7 @@ class UserflowService:
             elif formatted_price != user_input:
                 print("What you have entered does not match the total expected price. Please try again. ")
             else:
-                print(f"{Icon.PawIcon.value}Thank you, have a pawesome day{Icon.PawIcon.value}")
+                print(f"{Icon.PawIcon.value}  Thank you, have a pawesome day  {Icon.PawIcon.value}")
                 break
 
     def print_user_cart(self, cart: Cart):
@@ -159,7 +159,6 @@ class UserflowService:
         print(cart_table)
         cart_total = print(f"Your cart total is: £{formatted_price}")
         return cart_total
-
 
     def __add_to_cart(self, cart: Cart):
         """

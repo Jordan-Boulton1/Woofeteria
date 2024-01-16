@@ -16,20 +16,30 @@ class AdminService:
             if admin_info["admin_user"] != user_input:
                 return False, None
             else:
-                user_input = input("Please enter the secret password:\n")
-                result = self.__show_admin_flow(user_input, admin_info["admin_password"])
+                result = self.__show_admin_flow(admin_info["admin_password"])
                 return result
         except FileNotFoundError:
             print("Configuration file not found")
             return False, None
 
-    def __show_admin_flow(self, user_input: str, expected_admin_password: str):
-        if user_input == expected_admin_password:
-            print("You have successfully authorized the secret woof mode.")
-            result = self.__show_available_options()
-            return result
-        else:
-            return False
+    def __show_admin_flow(self,  expected_admin_password: str):
+        retry_counter = 3
+        result = False, None
+        for attempted_try in range(retry_counter):
+            user_input = input("Please enter the secret password:\n")
+            if user_input == expected_admin_password:
+                print("You have successfully authorized the secret woof mode.")
+                result = self.__show_available_options()
+                break
+            else:
+                attempted_try += 1
+                attemps_left = retry_counter - attempted_try
+                attempts_left_info = ""
+                if attemps_left > 0:
+                    attempts_left_info = f"You have {attemps_left} attempts left"
+                print(f"Password incorrect. Woofin mode access denied. {attempts_left_info}")
+                continue
+        return result
 
     def __show_available_options(self):
         result = False, None
@@ -68,6 +78,9 @@ class AdminService:
         user_input = UserInputValidator.validate_input_before_parsing(self.menu, True)
         item_ids = UserInputValidator.create_array_from_user_input(user_input)
         updated_menu = [item for item in self.menu if item.Id not in item_ids]
+        item_removed = [item for item in self.menu if item.Id in item_ids]
+        removed_item_names = [x.Name for x in item_removed]
+        print(f"The following item(s) have been removed: {', '.join(removed_item_names)}")
         self.menu = self.cafeteria_item_service.recalculate_ids(updated_menu)
         return self.menu
 

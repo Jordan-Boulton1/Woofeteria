@@ -39,6 +39,7 @@ class CafeteriaItemService:
             validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item_name)
             item = CafeteriaItem(item_id, item_name, validated_item_price, validated_item_quantity)
             menu.append(item)
+            print(f"{validated_item_quantity}x {item_name} has been added to the menu at a price of £{validated_item_price:.2f}")
         self.recalculate_ids(menu)
         return menu
 
@@ -51,11 +52,17 @@ class CafeteriaItemService:
                         menu,
                         input_text,
                         True).title()
+                    if item_name != "Skip":
+                        print(f"{item.Name} has been changed to {item_name}")
                     item = self.__handle_update_value(item_name, item)
                     validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item.Name,
                                                                                                          True, is_admin)
+                    if validated_item_quantity != "Skip":
+                        print(f"The stock value of {item.Name} has been changed from {item.Stock} to {validated_item_quantity}")
                     item = self.__handle_update_value(validated_item_quantity, item)
                     validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item.Name, True, is_admin)
+                    if validated_item_price != "Skip":
+                        print(f"The price of {item.Name} has been changed from £{PriceConverter.format_price(item.Price)} to £{PriceConverter.format_price(validated_item_price)}")
                     item = self.__handle_update_value(validated_item_price, item)
         return menu
 
