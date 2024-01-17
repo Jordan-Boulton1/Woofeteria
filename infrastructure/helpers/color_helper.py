@@ -8,11 +8,14 @@ class ColorHelper:
 
     @staticmethod
     def color_add_remove_text():
-        return f'({Fore.LIGHTGREEN_EX}Add{Fore.RESET}/{Fore.RED}Remove{Fore.RESET})'
+        return (f'({Fore.LIGHTGREEN_EX}Add{Fore.RESET}/{Fore.RED}Remove'
+                f'{Fore.RESET})')
 
     @staticmethod
     def color_add_update_remove_exit_text():
-        return f'({Fore.LIGHTGREEN_EX}Add{Fore.RESET}/{Fore.LIGHTCYAN_EX}Update{Fore.RESET}/{Fore.RED}Remove{Fore.RESET}/{Style.BRIGHT}Exit{Style.RESET_ALL}) '
+        return (f'({Fore.LIGHTGREEN_EX}Add{Fore.RESET}/{Fore.LIGHTCYAN_EX}'
+                f'Update{Fore.RESET}/{Fore.RED}Remove{Fore.RESET}'
+                f'/{Style.BRIGHT}Exit{Style.RESET_ALL}) ')
 
     @staticmethod
     def color_text(color: Fore, text: str):
