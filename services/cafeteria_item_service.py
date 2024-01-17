@@ -1,7 +1,5 @@
-import colorama
 from colorama import Style
 from tabulate import tabulate
-from dataclasses import dataclass
 
 from entities.cafeteria_item import CafeteriaItem
 from infrastructure.helpers.price_converter import PriceConverter
@@ -17,7 +15,8 @@ class CafeteriaItemService:
         headers = ["ID", "Name", "Price", "Stock"]
         table_items = []
         for item in menu:
-            table_item = [item.Id, item.Name, f"£ {item.Price:.2f}", item.Stock]
+            table_item = [item.Id, item.Name, f"£ {item.Price:.2f}",
+                          item.Stock]
             table_items.append(table_item)
         table1 = tabulate(table_items, headers=headers, tablefmt="pretty")
         print(table1)
@@ -28,42 +27,64 @@ class CafeteriaItemService:
         """
         return self.cafeteria_items
 
-    def add_items_to_menu(self, amount_of_items: int, menu: list[CafeteriaItem]):
+    def add_items_to_menu(self, amount_of_items: int,
+                          menu: list[CafeteriaItem]):
         last_item = self.cafeteria_items[-1]
         input_text = "Please enter a name for the new cafeteria item:\n"
         for i in range(amount_of_items):
             item_id = last_item.Id + 1
-            item_name = UserInputValidator.validate_user_input_is_correct_item_name(self.cafeteria_items,
-                                                                                    input_text).title()
-            validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item_name, False)
-            validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item_name)
-            item = CafeteriaItem(item_id, item_name, validated_item_price, validated_item_quantity)
+            item_name = (UserInputValidator
+                         .validate_user_input_is_correct_item_name
+                         (self.cafeteria_items, input_text).title())
+            validated_item_quantity = (UserInputValidator
+                                       .validate_user_input_is_correct_quantity
+                                       (item_name, False))
+            validated_item_price = (UserInputValidator
+                                    .validate_user_input_is_correct_price
+                                    (item_name))
+            item = CafeteriaItem(item_id, item_name, validated_item_price,
+                                 validated_item_quantity)
             menu.append(item)
-            print(f"{validated_item_quantity}x {item_name} has been added to the menu at a price of £{validated_item_price:.2f}")
+            print(f"{validated_item_quantity}x {item_name} has been added to "
+                  f"the menu at a price of £{validated_item_price:.2f}")
         self.recalculate_ids(menu)
         return menu
 
-    def update_items(self, item_ids: list[int], menu: list[CafeteriaItem], is_admin: bool = False):
+    def update_items(self, item_ids: list[int], menu: list[CafeteriaItem],
+                     is_admin: bool = False):
         for item in menu:
             for item_id in item_ids:
                 if item.Id == item_id:
-                    input_text = f"Please enter a new name for {item.Name} or type '{Style.BRIGHT}Skip{Style.RESET_ALL}' not to change it.\n"
-                    item_name = UserInputValidator.validate_user_input_is_correct_item_name(
-                        menu,
-                        input_text,
-                        True).title()
+                    input_text = (f"Please enter a new name for {item.Name} "
+                                  f"or type "
+                                  f"'{Style.BRIGHT}Skip{Style.RESET_ALL}' "
+                                  f"not to change it.\n")
+                    item_name = (UserInputValidator
+                                 .validate_user_input_is_correct_item_name
+                                 (menu, input_text, True).title())
                     if item_name != "Skip":
                         print(f"{item.Name} has been changed to {item_name}")
                     item = self.__handle_update_value(item_name, item)
-                    validated_item_quantity = UserInputValidator.validate_user_input_is_correct_quantity(item.Name,
-                                                                                                         True, is_admin)
+                    validated_item_quantity = (UserInputValidator
+                                               .validate_user_input_is_correct_quantity  # noqa
+                                               (item.Name, True, is_admin))
                     if validated_item_quantity != "Skip":
-                        print(f"The stock value of {item.Name} has been changed from {item.Stock} to {validated_item_quantity}")
-                    item = self.__handle_update_value(validated_item_quantity, item)
-                    validated_item_price = UserInputValidator.validate_user_input_is_correct_price(item.Name, True, is_admin)
+                        print(
+                            f"The stock value of {item.Name} "
+                            f"has been changed from {item.Stock} "
+                            f"to {validated_item_quantity}")
+                    item = self.__handle_update_value(validated_item_quantity,
+                                                      item)
+                    validated_item_price = (UserInputValidator
+                                            .validate_user_input_is_correct_price  # noqa
+                                            (item.Name, True, is_admin))
                     if validated_item_price != "Skip":
-                        print(f"The price of {item.Name} has been changed from £{PriceConverter.format_price(item.Price)} to £{PriceConverter.format_price(validated_item_price)}")
-                    item = self.__handle_update_value(validated_item_price, item)
+                        print(
+                            f"The price of {item.Name} has been changed from "
+                            f"£{PriceConverter.format_price(item.Price)} to "
+                            f"£{PriceConverter.format_price(validated_item_price)}")  # noqa
+                    item = self.__handle_update_value(validated_item_price,
+                                                      item)
         return menu
 
     def __handle_update_value(self, user_input, item: CafeteriaItem):
@@ -76,22 +97,27 @@ class CafeteriaItemService:
                 item.Price = user_input
         return item
 
-    def subtract_from_stock(self, ordered_item: CafeteriaItem, menu_list: list[CafeteriaItem], ordered_amount: int):
+    def subtract_from_stock(self, ordered_item: CafeteriaItem,
+                            menu_list: list[CafeteriaItem],
+                            ordered_amount: int):
         """
-        Loops through the menu list and checks if the id of the item passed in the function matches the current item id
-        in the loop, if it does it subtract the ordered amount from the current item stock and reassigns the menu to
-        the newly updated one.
+        Loops through the menu list and checks if the id of the item passed
+        in the function matches the current item id in the loop, if it does
+        it subtract the ordered amount from the current item stock and
+        reassigns the menu to the newly updated one.
         """
         for cafeteria_item in menu_list:
             if ordered_item.Id == cafeteria_item.Id:
                 cafeteria_item.Stock -= ordered_amount
         self.cafeteria_items = menu_list
 
-    def add_to_stock(self, ordered_item: CafeteriaItem, menu_list: list[CafeteriaItem], ordered_amount: int):
+    def add_to_stock(self, ordered_item: CafeteriaItem,
+                     menu_list: list[CafeteriaItem], ordered_amount: int):
         """
-        Loops through the menu list and checks if the id of the item passed in the function matches the current item id
-        in the loop, if it does it add the ordered amount to the current item stock and reassigns the menu to
-        the newly updated one.
+        Loops through the menu list and checks if the id of the item passed
+        in the function matches the current item id in the loop, if it does
+        it add the ordered amount to the current item stock and reassigns
+        the menu to the newly updated one.
         """
         for cafeteria_item in menu_list:
             if ordered_item.Id == cafeteria_item.Id:
