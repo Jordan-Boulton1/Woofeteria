@@ -197,5 +197,5 @@ class UserInputValidator:
     def __validate_user_input_is_name(user_input: str):
         if user_input.isspace():
             return False
-        pattern = re.compile(r'^[a-zA-Z]+(?:[-\'][a-zA-Z]+)?$')
+        pattern = re.compile(r'^[a-zA-Z]+(?:[ -][a-zA-Z]+)*$')
         return bool(re.match(pattern, user_input))
