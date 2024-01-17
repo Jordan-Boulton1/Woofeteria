@@ -27,18 +27,24 @@ class UserflowService:
 
     def start_cafeteria_flow(self):
         """
-        Starts the cafeteria and shows the user the menu, initialises the cart and adds the items to it.
+        Starts the cafeteria and shows the user the menu, initialises the cart
+        and adds the items to it.
         Also allows the user to either continue or finish their order.
-        If the user provides unexpected inputs, the user will be prompted with a message stating that the input was not
+        If the user provides unexpected inputs, the user will be prompted with
+        a message stating that the input was not
         valid.
         """
-        print(f"{Icon.DogIcon.value}  Welcome to Storm's Woofeteria.  {Icon.DogIcon.value}")
+        print(
+            f"{Icon.DogIcon.value}  Welcome to Storm's Woofeteria.  "
+            f"{Icon.DogIcon.value}")
         user_input = UserInputValidator.validate_user_name()
-        admin_name_provided = self.admin_service.validate_if_admin_name_provided(user_input)
+        admin_name_provided = (self.admin_service.
+                               validate_if_admin_name_provided(user_input))
         if not admin_name_provided[0]:
             if admin_name_provided[1] is not None:
                 self.menu = admin_name_provided[1]
-            print(f"Hello {user_input.title()}. Here is what Chef Storm has to offer.")
+            print(f"Hello {user_input.title()}. "
+                  f"Here is what Chef Storm has to offer.")
             self.__show_menu()
             cart_items = self.__handle_order(self.menu)
             cart = self.cart_service.add_to_cart(cart_items)
@@ -53,7 +59,9 @@ class UserflowService:
                     self.__continue_flow(user_input, cart)
                     break
                 else:
-                    print(f"The input entered is not valid. Please try using {ColorHelper.color_yes_no_text()} ")
+                    print(
+                        f"The input entered is not valid. Please try using "
+                        f"{ColorHelper.color_yes_no_text()} ")
 
     def __show_menu(self):
         """
@@ -63,12 +71,14 @@ class UserflowService:
 
     def __continue_flow(self, user_input: str, cart: Cart):
         """
-        If the user provides the input value of "Y", the ordering flow will be completed.
-        If the user provides the input value of "N", the ordering flow will provide two options to the user "Add" or
-        "Remove". If "Add" is selected the user will be able to add more items to their cart. If "Remove" is selected
-        the user will be able to remove items from their cart.
-        If the user provides unexpected inputs, the user will be prompted with a message stating that the input was not
-        valid.
+        If the user provides the input value of "Y", the ordering flow will
+        be completed. If the user provides the input value of "N",
+        the ordering flow will provide two options to the user "Add" or
+        "Remove". If "Add" is selected the user will be able to add more
+        items to their cart. If "Remove" is selected the user will be able to
+        remove items from their cart. If the user provides unexpected inputs,
+        the user will be prompted with a message stating that the input was
+        not valid.
         """
         is_flow_continued = True
         while True:
@@ -88,7 +98,8 @@ class UserflowService:
         while True:
             self.print_user_cart(cart)
             user_input = input(
-                f"Would you like to add or remove item(s) from your cart? {ColorHelper.color_add_remove_text()}\n")
+                f"Would you like to add or remove item(s) from your cart? "
+                f"{ColorHelper.color_add_remove_text()}\n")
             if user_input.capitalize() == "Add":
                 updated_cart = self.__add_to_cart(cart)
                 result = self.__handle_continue_flow(updated_cart)
@@ -98,18 +109,22 @@ class UserflowService:
                 result = self.__handle_continue_flow(updated_cart)
                 break
             else:
-                print(f"The input entered is not valid. Please try using {ColorHelper.color_add_remove_text()}")
+                print(
+                    f"The input entered is not valid. Please try using "
+                    f"{ColorHelper.color_add_remove_text()}")
         return result
 
     def __handle_continue_flow(self, cart: Cart):
         """
-        Handles the continuation of the ordering flow and ensures that the user can only provide a valid input, "Y" or
-        "N".
+        Handles the continuation of the ordering flow and ensures that the
+        user can only provide a valid input, "Y" or "N".
         """
         result = True
         while True:
             self.print_user_cart(cart)
-            user_input = input(f"Are you finished with your order? {ColorHelper.color_yes_no_text()}\n")
+            user_input = input(
+                f"Are you finished with your order? "
+                f"{ColorHelper.color_yes_no_text()}\n")
             if user_input.capitalize() == "Y":
                 result = False
                 break
@@ -118,34 +133,49 @@ class UserflowService:
                 self.cart_service.print_cart(cart)
                 break
             else:
-                print(f"The input entered is not valid. Please try using{ColorHelper.color_yes_no_text()} ")
+                print(
+                    f"The input entered is not valid. Please try using"
+                    f"{ColorHelper.color_yes_no_text()} ")
         return result
 
     def __complete_user_flow(self, cart: Cart):
         """
-        When completing the flow the user will be presented with the total price of their cart, which is formatted to
-        two decimal places.
-        The user will be asked to enter the exact amount of money they need to pay in order to complete their order.
-        If the user enters a value that is not a decimal number, the user will be shown an error message stating that
-        they have not entered a valid input.
-        If the user enters a value that does not match the total price of the cart, the user will be shown an error
-        message stating that the value they have entered does not match the total price of the cart.
+        When completing the flow the user will be presented with the total
+        price of their cart, which is formatted to two decimal places. The
+        user will be asked to enter the exact amount of money they need to
+        pay in order to complete their order. If the user enters a value that
+        is not a decimal number, the user will be shown an error message
+        stating that they have not entered a valid input. If the user enters
+        a value that does not match the total price of the cart, the user
+        will be shown an error message stating that the value they have
+        entered does not match the total price of the cart.
         """
 
         while True:
-            formatted_price = self.price_converter.format_price(cart.TotalPrice)
+            formatted_price = (self.price_converter.
+                               format_price(cart.TotalPrice))
             self.print_user_cart(cart)
             if len(cart.Items) == 0:
-                print(f"{Icon.PawIcon.value}Thanks for visiting Woofeteria, have a pawesome day!{Icon.PawIcon.value}")
+                print(
+                    f"{Icon.PawIcon.value}Thanks for visiting Woofeteria, "
+                    f"have a pawesome day!{Icon.PawIcon.value}")
                 break
-            user_input = input("Please enter the cart total on screen (minus the pound sign) to complete your purchase.\n")
-            is_user_input_valid = UserInputValidator.validate_user_input_is_a_decimal(user_input)
+            user_input = input(
+                "Please enter the cart total on screen (minus the pound sign) "
+                "to complete your purchase.\n")
+            is_user_input_valid = (UserInputValidator.
+                                   validate_user_input_is_a_decimal(user_input)
+                                   )
             if not is_user_input_valid:
                 print("Please enter a valid input")
             elif formatted_price != user_input:
-                print("What you have entered does not match the total expected price. Please try again. ")
+                print(
+                    "What you have entered does not match the total expected "
+                    "price. Please try again. ")
             else:
-                print(f"{Icon.PawIcon.value}  Thank you, have a pawesome day  {Icon.PawIcon.value}")
+                print(
+                    f"{Icon.PawIcon.value}  Thank you, have a pawesome day  "
+                    f"{Icon.PawIcon.value}")
                 break
 
     def print_user_cart(self, cart: Cart):
@@ -153,7 +183,8 @@ class UserflowService:
         headers = ["ID", "Name", "Price", "Quantity"]
         table_items = []
         for cart_item in cart.Items:
-            table_item = [cart_item.Id, cart_item.Name, f"£ {cart_item.Price:.2f}", cart_item.Stock]
+            table_item = [cart_item.Id, cart_item.Name,
+                          f"£ {cart_item.Price:.2f}", cart_item.Stock]
             table_items.append(table_item)
         cart_table = tabulate(table_items, headers=headers, tablefmt="pretty")
         print(cart_table)
@@ -171,10 +202,11 @@ class UserflowService:
 
     def __remove_from_cart(self, cart: Cart):
         """
-        Validates that the user input contains integers and if there is more than one item they are separated by a
-        comma.
-        Then an array of integers is created from the user input and that array is used to locate the items in the cart
-        after that the item is removed from the cart and added back to the cafeteria stock.
+        Validates that the user input contains integers and if there is more
+        than one item they are separated by a comma. Then an array of
+        integers is created from the user input and that array is used to
+        locate the items in the cart after that the item is removed from the
+        cart and added back to the cafeteria stock.
         """
         cart_items = UserInputValidator.validate_item_ids(cart.Items, True)
         updated_items = self.__add_stock(cart_items)
@@ -192,70 +224,86 @@ class UserflowService:
                         if updated_item.Stock == 0:
                             self.unique_set.remove(cart_item.Id)
                             self.cart_result.remove(cart_item)
-                            if [item for item in cart.Items if item.Id == cart_item.Id]:
+                            if [item for item in cart.Items if
+                                item.Id == cart_item.Id]:  # noqa
                                 cart.Items.remove(cart_item)
                         else:
                             cart.Items.remove(cart_item)
                             cart.Items.append(updated_item)
-                            if [item for item in self.cart_result if item.Id == cart_item.Id]:
+                            if [item for item in self.cart_result if
+                                item.Id == cart_item.Id]:  # noqa
                                 self.cart_result.remove(cart_item)
                                 self.cart_result.append(updated_item)
 
     def __handle_order(self, items: list[CafeteriaItem]):
         """
-        Orders the selected item from the user and removes it from the cafeteria stock.
+        Orders the selected item from the user and removes it from the
+        cafeteria stock.
         """
         ordered_items = UserInputValidator.validate_item_ids(items)
         return self.__subtract_stock(ordered_items)
 
     def __subtract_stock(self, cart_items: list[CafeteriaItem]):
         """
-        Creates a deepcopy of the cafeteria menu in order to preserve the original value of the menu, then we loop
-        through the items inside the user cart and for each one of the items we find a specific one by matching the ids
-        from the menu, and then we check if the item with the specified id is inside the unique global set if it is not
-        we add the id to the unique set, and then we override the item stock with the user input and add it to a global
-        array of cafeteria items.
-        If the item id is already in the unique set, we simply add the user input to the stock of the existing item.
-        Finally, we subtract the ordered item from the stock of the cafeteria.
+        Creates a deepcopy of the cafeteria menu in order to preserve the
+        original value of the menu, then we loop through the items inside the
+        user cart and for each one of the items we find a specific one by
+        matching the ids from the menu, and then we check if the item with
+        the specified id is inside the unique global set if it is not we add
+        the id to the unique set, and then we override the item stock with
+        the user input and add it to a global array of cafeteria items. If
+        the item id is already in the unique set, we simply add the user
+        input to the stock of the existing item. Finally, we subtract the
+        ordered item from the stock of the cafeteria.
         """
         menu_list_copy = copy.deepcopy(self.menu)
         for item in cart_items:
-            menu_item = next((x for x in menu_list_copy if x.Id == item.Id), None)
+            menu_item = next((x for x in menu_list_copy if x.Id == item.Id),
+                             None)
             if item.Stock == 0:
                 print(f"Sorry {item.Name} is out of stock.")
                 continue
-            user_input = int(UserInputValidator.validate_input_for_items(menu_item))
+            user_input = int(
+                UserInputValidator.validate_input_for_items(menu_item))
             if item.Id not in self.unique_set:
                 self.unique_set.add(item.Id)
                 item.Stock = user_input
                 self.cart_result.append(item)
             else:
-                cart_item = next((x for x in self.cart_result if x.Id == item.Id), None)
+                cart_item = next(
+                    (x for x in self.cart_result if x.Id == item.Id), None)
                 if menu_item.Stock == 0:
                     continue
                 else:
                     cart_item.Stock += user_input
-            self.cafeteria_item_service.subtract_from_stock(item, menu_list_copy, user_input)
+            self.cafeteria_item_service.subtract_from_stock(item,
+                                                            menu_list_copy,
+                                                            user_input)
             print(f"You have added x{user_input} {item.Name} to your cart")
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         return self.cart_result
 
     def __add_stock(self, cart_items: list[CafeteriaItem]):
         """
-        Creates a deepcopy of the cafeteria menu in order to preserve the original value of the menu.
-        We then create an empty array that will store the updated items for the user cart, then we loop through the
-        items in the user cart, we validate the input, and then we check if the user is trying to remove an item from
-        their cart that has a quantity of "1", we add it back to the cafeteria stock and continue the loop, otherwise
-        we subtract from the quantity of the item in the user cart, we add it to the array that we created, and add the
-        item back to the cafeteria stock.
+        Creates a deepcopy of the cafeteria menu in order to preserve the
+        original value of the menu. We then create an empty array that will
+        store the updated items for the user cart, then we loop through the
+        items in the user cart, we validate the input, and then we check if
+        the user is trying to remove an item from their cart that has a
+        quantity of "1", we add it back to the cafeteria stock and continue
+        the loop, otherwise we subtract from the quantity of the item in the
+        user cart, we add it to the array that we created, and add the item
+        back to the cafeteria stock.
         """
         menu_list_copy = copy.deepcopy(self.menu)
         cart_items_updated = []
         for item in cart_items:
-            user_input = int(UserInputValidator.validate_input_for_items(item, True))
+            user_input = int(
+                UserInputValidator.validate_input_for_items(item, True))
             item.Stock -= user_input
             print(f"You have removed: x{user_input} {item.Name}")
             cart_items_updated.append(item)
-            self.cafeteria_item_service.add_to_stock(item, menu_list_copy, user_input)
+            self.cafeteria_item_service.add_to_stock(item, menu_list_copy,
+                                                     user_input)
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
         return cart_items_updated
