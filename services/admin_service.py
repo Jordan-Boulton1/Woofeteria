@@ -2,7 +2,6 @@ from infrastructure.helpers.color_helper import ColorHelper
 from infrastructure.helpers.json_file_helper import JsonFileHelper
 from infrastructure.validators.user_input_validator import UserInputValidator
 from services.cafeteria_item_service import CafeteriaItemService
-import copy
 
 
 class AdminService:
@@ -36,8 +35,10 @@ class AdminService:
                 attemps_left = retry_counter - attempted_try
                 attempts_left_info = ""
                 if attemps_left > 0:
-                    attempts_left_info = f"You have {attemps_left} attempts left"
-                print(f"Password incorrect. Woofin mode access denied. {attempts_left_info}")
+                    attempts_left_info = (f"You have {attemps_left}"
+                                          f" attempts left")
+                print(f"Password incorrect. Woofin mode access denied. "
+                      f"{attempts_left_info}")
                 continue
         return result
 
@@ -46,7 +47,8 @@ class AdminService:
         is_flow_continued = False
         while True:
             self.cafeteria_item_service.print_cafeteria_menu(self.menu)
-            user_input = input(f"How would you like to edit the menu?{ColorHelper.color_add_update_remove_exit_text()}\n")
+            user_input = input(f"How would you like to edit the menu?"
+                               f"{ColorHelper.color_add_update_remove_exit_text()}\n")  # noqa
             if user_input.capitalize() == "Add":
                 result = False, self.__handle_add()
                 is_flow_continued = self.__continue_or_complete_flow()
@@ -60,7 +62,8 @@ class AdminService:
                 result = False, self.menu
                 is_flow_continued = False
             else:
-                print(f"The input entered is not valid. Please try using{ColorHelper.color_add_update_remove_exit_text()}")
+                print(f"The input entered is not valid. Please try using"
+                      f"{ColorHelper.color_add_update_remove_exit_text()}")
                 is_flow_continued = True
             if is_flow_continued:
                 continue
@@ -69,31 +72,38 @@ class AdminService:
         return result
 
     def __handle_update(self):
-        user_input = UserInputValidator.validate_input_before_parsing(self.menu, False, True)
+        user_input = (UserInputValidator.validate_input_before_parsing
+                      (self.menu, False, True))
         item_ids = UserInputValidator.create_array_from_user_input(user_input)
-        self.menu = self.cafeteria_item_service.update_items(item_ids, self.menu, True)
+        self.menu = (self.cafeteria_item_service.update_items
+                     (item_ids, self.menu, True))
         return self.menu
 
     def __handle_remove(self):
-        user_input = UserInputValidator.validate_input_before_parsing(self.menu, True)
+        user_input = (UserInputValidator.validate_input_before_parsing
+                      (self.menu, True))
         item_ids = UserInputValidator.create_array_from_user_input(user_input)
         updated_menu = [item for item in self.menu if item.Id not in item_ids]
         item_removed = [item for item in self.menu if item.Id in item_ids]
         removed_item_names = [x.Name for x in item_removed]
-        print(f"The following item(s) have been removed: {', '.join(removed_item_names)}")
+        print(f"The following item(s) have been removed: "
+              f"{', '.join(removed_item_names)}")
         self.menu = self.cafeteria_item_service.recalculate_ids(updated_menu)
         return self.menu
 
     def __handle_add(self):
         while True:
             user_input = input("How many items would you like to add?\n")
-            validate_user_input = UserInputValidator.validate_user_input_is_a_number(user_input)
+            validate_user_input = (UserInputValidator
+                                   .validate_user_input_is_a_number(user_input)
+                                   )
             if not validate_user_input:
                 print("Please enter a valid input")
             elif validate_user_input and int(user_input) == 0:
                 print(f"You cannot add {user_input} items")
             else:
-                self.menu = self.cafeteria_item_service.add_items_to_menu(int(user_input), self.menu)
+                self.menu = (self.cafeteria_item_service.add_items_to_menu
+                             (int(user_input), self.menu))
                 break
         return self.menu
 
@@ -101,7 +111,8 @@ class AdminService:
     def __continue_or_complete_flow():
         result = False
         while True:
-            user_input = input(f"Do you want to continue editing the menu? {ColorHelper.color_yes_no_text()}\n")
+            user_input = input(f"Do you want to continue editing the menu? "
+                               f"{ColorHelper.color_yes_no_text()}\n")
             if user_input.capitalize() == "Y":
                 result = True
                 break
