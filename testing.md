@@ -73,3 +73,39 @@ Defensive programming was manually tested with the below user acceptance testing
 || If the admin selects (Remove), the feature is expected to allow the admin to remove items from the menu. | Tested the feature by removing an item from the menu. Tested the validation by entering invalid inputs such as: characters, special characters, `empty` and  `spacebar`. | The feature behaves as expected and only allows a valid input in order to remove items from the menu. | Test concluded and passed | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/defensive%20programming/dp-admin-remove-validation.png) |
 |||||| ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/defensive%20programming/dp-admin-remove-validation-2.png)
 || If the admin selects (Exit), the feature is expected to exit admin mode and return to the regular user flow. | Tested the feature by inputting exit and checking if it continued the regular user flow properly.| The feature behaves as expected and exits admin mode and continues the regular user flow. | Test concluded and passed | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/defensive%20programming/dp-admin-exit-validation.png)
+
+## Bugs
+
+- Admin Flow - Not Recalculating Menu ID
+
+    ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/bugs/admin-flow-bug.PNG)
+
+    - To fix this, I made a function that recalculated the item ID's.
+
+- Admin Flow - Validation
+    
+    ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/bugs/admin-flow-bug-2.png)
+    
+    - To fix this, I added an `else` check, that checks if what the user has entered is a valid input, if it isn't, it prints a message to the terminal.
+
+- Cart Item Duplication
+
+    ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/bugs/cart-bug.PNG)
+
+    - To fix this, I added an `If` statement that checks if the same item is in the user cart the same item would not be added, instead the quantity would be increased.
+
+- Stock Total
+
+    ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/bugs/stock-bug.PNG)
+
+    - To fix this, I removed a piece of code that was taking the user input and storing it as the Stock value.
+
+## Unfixed Bugs
+
+- When you run the terminal on the firefox web browser, only half of the emojis load.
+
+    ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/bugs/firefox-emoji-bug.png)
+
+    - Attempted fix: As the terminal was not made by me, I was unsure how to fix this bug.
+
+There are no remaining bugs that I am aware of.
