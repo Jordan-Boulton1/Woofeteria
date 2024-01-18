@@ -67,3 +67,12 @@ Upon successfully entering the correct password, the user will have full access 
 - **Delete**: user can delete products from the menu.
 
 </details>
+
+### Future Features
+
+- Description of menu items
+    - I would like add a future feature, so that the user can see a description of what the menu item is.
+- Global Stock
+    - I would like to implement a stock feature that is hooked up to [googlesheets](https://docs.google.com/spreadsheets/u/0/), where the stock is global and menu items can be sold out.
+- Global Stock Refresh Timer
+    - I would like to implement a timer that refreshes the global stock every 30 minutes with random stock values.
