@@ -55,37 +55,66 @@ class CafeteriaItemService:
         for item in menu:
             for item_id in item_ids:
                 if item.Id == item_id:
-                    input_text = (f"Please enter a new name for {item.Name} "
-                                  f"or type "
-                                  f"'{Style.BRIGHT}Skip{Style.RESET_ALL}' "
-                                  f"not to change it.\n")
-                    item_name = (UserInputValidator
-                                 .validate_user_input_is_correct_item_name
-                                 (menu, input_text, True).title())
-                    if item_name != "Skip":
-                        print(f"{item.Name} has been changed to {item_name}")
-                    item = self.__handle_update_value(item_name, item)
-                    validated_item_quantity = (UserInputValidator
-                                               .validate_user_input_is_correct_quantity  # noqa
-                                               (item.Name, True, is_admin))
-                    if validated_item_quantity != "Skip":
-                        print(
-                            f"The stock value of {item.Name} "
-                            f"has been changed from {item.Stock} "
-                            f"to {validated_item_quantity}")
+                    item = self.__update_item_name(item, menu)
+                    item = self.__update_item_quantity(is_admin, item)
+                    item = self.__update_item_price(is_admin, item)
+        return menu
+
+    def __update_item_price(self, is_admin, item):
+        while True:
+            validated_item_price = (UserInputValidator
+                                    .validate_user_input_is_correct_price
+                                    (item.Name, True, is_admin))
+            if validated_item_price != "Skip":
+                if item.Price != validated_item_price:
+
+                    print(
+                        f"The price of {item.Name} has been changed from "
+                        f"£{PriceConverter.format_price(item.Price)} to "
+                        f"£{PriceConverter.format_price(validated_item_price)}")
+                    item = self.__handle_update_value(validated_item_price, item)
+                else:
+                    print(
+                        f"The price of {item.Name} is already {PriceConverter.format_price(item.Price)}. Please, try again.")
+                    continue
+            else:
+                break
+            return item
+
+    def __update_item_quantity(self, is_admin, item):
+        while True:
+            validated_item_quantity = (UserInputValidator
+                                       .validate_user_input_is_correct_quantity(item.Name, True, is_admin))
+            if validated_item_quantity != "Skip":
+                if item.Stock != validated_item_quantity:
+                    print(
+                        f"The stock value of {item.Name} "
+                        f"has been changed from {item.Stock} "
+                        f"to {validated_item_quantity}")
                     item = self.__handle_update_value(validated_item_quantity,
                                                       item)
-                    validated_item_price = (UserInputValidator
-                                            .validate_user_input_is_correct_price  # noqa
-                                            (item.Name, True, is_admin))
-                    if validated_item_price != "Skip":
-                        print(
-                            f"The price of {item.Name} has been changed from "
-                            f"£{PriceConverter.format_price(item.Price)} to "
-                            f"£{PriceConverter.format_price(validated_item_price)}")  # noqa
-                    item = self.__handle_update_value(validated_item_price,
-                                                      item)
-        return menu
+                    break
+                else:
+                    print(
+                        f"The stock value of {item.Name} is already {item.Stock}. Please, try again.")
+                    continue
+            else:
+                break
+        return item
+
+    def __update_item_name(self, item, menu):
+        input_text = (f"Please enter a new name for {item.Name} "
+                      f"or type "
+                      f"'{Style.BRIGHT}Skip{Style.RESET_ALL}' "
+                      f"not to change it.\n")
+        item_name = (UserInputValidator
+                     .validate_user_input_is_correct_item_name
+                     (menu, input_text, True).title())
+        if item_name != "Skip":
+            print(f"{item.Name} has been changed to {item_name}")
+        if item.Name != item_name:
+            item = self.__handle_update_value(item_name, item)
+        return item
 
     def __handle_update_value(self, user_input, item: CafeteriaItem):
         if user_input != "Skip":
