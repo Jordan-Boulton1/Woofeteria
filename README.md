@@ -76,3 +76,12 @@ Upon successfully entering the correct password, the user will have full access 
     - I would like to implement a stock feature that is hooked up to [googlesheets](https://docs.google.com/spreadsheets/u/0/), where the stock is global and menu items can be sold out.
 - Global Stock Refresh Timer
     - I would like to implement a timer that refreshes the global stock every 30 minutes with random stock values.
+
+## Tools & Technologies Used
+
+- [Python](https://www.python.org) used as the back-end programming language.
+- [Git](https://git-scm.com) used for version control. (`git add`, `git commit`, `git push`)
+- [GitHub](https://github.com) used for secure online code storage.
+- [PyCharm](https://www.jetbrains.com/pycharm/) used as a cloud-based IDE for development.
+- [Heroku](https://www.heroku.com) used for hosting the deployed back-end site.
+- [Regex101](https://regex101.com/) used to build regex expressions
