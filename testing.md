@@ -22,3 +22,13 @@ I have used the recommended [PEP8 CI Python Linter](https://pep8ci.herokuapp.com
 | enum_icon.py | [PEP8 CI](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/Jordan-Boulton1/woofeteria/main/infrastructure/enums/enum_icon.py) | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/validation/py-validation-enum-icon.png) | Pass: No Errors |
 | cart.py | [PEP8 CI](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/Jordan-Boulton1/woofeteria/main/entities/cart.py) | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/validation/py-validation-cart.png) | Pass: No Errors |
 | cafeteria_item.py | [PEP8 CI](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/Jordan-Boulton1/woofeteria/main/entities/cafeteria_item.py) | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/validation/py-validation-cafeteria-item.png) | Pass: No Errors |
+
+## Browser Compatibility
+
+I've tested my deployed project on multiple browsers to check for compatibility issues.
+
+| Browser | User Flow | Admin Flow | Notes |
+| --- | --- | --- | --- |
+| Chrome | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/compatibility/chrome-compatibility.png) | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/compatibility/chrome-compatibility-admin.png) | Works as expected |
+| Firefox | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/compatibility/firefox-compatibility.png) | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/compatibility/firefox-compatibility-admin.png) | Emoji's do not load properly |
+| Edge | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/compatibility/edge-compatibility.png) | ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/compatibility/edge-compatibility-admin.png) | Works as expected |
