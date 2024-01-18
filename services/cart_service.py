@@ -34,17 +34,17 @@ class CartService:
 
     def update_cart(self, cart: Cart, selected_items: list[CafeteriaItem]):
         """
-       Update the provided Cart object with information from a list of selected
-       CafeteriaItems.
-       Args:
-           cart (Cart): The Cart object to be updated.
-           selected_items (list[CafeteriaItem]): A list of CafeteriaItems
-            to be added to the cart.
-       Returns:
-           Cart: The updated Cart object containing the total price,
-           total quantity, and a sorted list of selected CafeteriaItems
-           based on their IDs.
-       """
+        Update the provided Cart object with information from a list of
+        selected CafeteriaItems.
+        Args:
+            cart (Cart): The Cart object to be updated.
+            selected_items (list[CafeteriaItem]): A list of CafeteriaItems
+             to be added to the cart.
+        Returns:
+            Cart: The updated Cart object containing the total price,
+            total quantity, and a sorted list of selected CafeteriaItems
+            based on their IDs.
+        """
         cart.TotalPrice = self.__calculate_total_price(selected_items)
         cart.TotalQuantity = self.__calculate_total_quantity(selected_items)
         cart.Items = selected_items
@@ -86,29 +86,29 @@ class CartService:
 
     def __calculate_total_quantity(self, selected_items: list[CafeteriaItem]):
         """
-        Calculate the total quantity of a list of CafeteriaItems based on
-        their stock quantities.
+        Calculate the total quantity of a list of CafeteriaItems based on their
+        stock quantities.
         Args:
-           selected_items (list[CafeteriaItem]): A list of CafeteriaItems for
-            which to calculate the total quantity.
-       Returns:
-           int: The total quantity calculated by summing the individual stock
-           quantities of each item in the selected_items list.
+            selected_items (list[CafeteriaItem]): A list of CafeteriaItems for
+             which to calculate the total quantity.
+        Returns:
+            int: The total quantity calculated by summing the individual stock
+            quantities of each item in the selected_items list.
         """
         return sum(item.Stock for item in selected_items)
 
     def __calculate_total_price(self, selected_items: list[CafeteriaItem]):
         """
-       Calculate the total price of a list of CafeteriaItems based on their
-       prices and quantities.
-       Args:
-           selected_items (list[CafeteriaItem]): A list of CafeteriaItems for
-            which to calculate the total price.
-       Returns:
-           float: The total price calculated by summing the individual total
-           prices of each item (price multiplied by quantity) in the
-           selected_items list.
-       """
+        Calculate the total price of a list of CafeteriaItems based on their
+        prices and quantities.
+        Args:
+            selected_items (list[CafeteriaItem]): A list of CafeteriaItems for
+             which to calculate the total price.
+        Returns:
+            float: The total price calculated by summing the individual total
+            prices of each item (price multiplied by quantity) in the
+            selected_items list.
+        """
         total_price_per_item_array = []
         for selected_item in selected_items:
             total_price_per_item = selected_item.Price * selected_item.Stock

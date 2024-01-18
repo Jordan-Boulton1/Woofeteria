@@ -48,18 +48,17 @@ class UserflowService:
 
     def start_cafeteria_flow(self):
         """
-       Begin the cafeteria flow, welcoming the user, displaying the menu
-       and handling user orders.
+        Begin the cafeteria flow, welcoming the user, displaying the menu
+        and handling user orders.
 
-       Prints a welcome message and prompts the user for their name.
-       If an admin name is provided, sets the menu to the provided admin menu.
-       Otherwise, displays Chef Storm's menu and handles user orders by showing
-       the menu, handling the order, and creating a cart.
-       Continues to prompt the user to review and complete their order until
-       the user indicates they are finished or wish to continue.
-       Once the order is completed, proceeds to the next steps of the
-       cafeteria flow.
-       """
+        Prints a welcome message and prompts the user for their name.
+        If an admin name is provided, sets the menu to the provided admin menu.
+        Otherwise, displays Chef Storm's menu and handles user orders by
+        showing the menu, handling the order, and creating a cart. Continues to
+        prompt the user to review and complete their order until the user
+        indicates they are finished or wish to continue. Once the order is
+        completed, proceeds to the next steps of the cafeteria flow.
+        """
         print(
             f"{Icon.DogIcon.value}  Welcome to Storm's Woofeteria.  "
             f"{Icon.DogIcon.value}")
@@ -100,17 +99,17 @@ class UserflowService:
 
     def __continue_flow(self, user_input: str, cart: Cart):
         """
-       Continue or complete the cafeteria flow based on user input.
-       Args:
-           user_input (str): The user's input indicating whether
-            they want to continue ('Y') or not ('N').
-           cart (Cart): The Cart object representing the user's current
-            selections.
-       The method continues prompting the user based on their input, either
-       continuing the flow or showing options and updating the cart.
-       If the flow is to be continued, the loop continues; otherwise, it breaks
-       and proceeds to completing the user flow.
-           """
+        Continue or complete the cafeteria flow based on user input.
+        Args:
+            user_input (str): The user's input indicating whether
+             they want to continue ('Y') or not ('N').
+            cart (Cart): The Cart object representing the user's current
+             selections.
+        The method continues prompting the user based on their input, either
+        continuing the flow or showing options and updating the cart.
+        If the flow is to be continued, the loop continues; otherwise,
+        it breaks and proceeds to completing the user flow.
+        """
         is_flow_continued = True
         while True:
             if user_input.capitalize() == "Y":
@@ -126,19 +125,19 @@ class UserflowService:
 
     def __show_options(self, cart: Cart):
         """
-       Display options for adding or removing items from the user's cart.
-       Args:
-           cart (Cart): The Cart object representing the user's current
-            selections.
-       Returns:
-           bool: True if the user chooses to continue the flow,
-           otherwise - False.
-       The method prompts the user to add or remove items from their cart and
-       handles the corresponding actions. It returns True if the user chooses
-       to continue the flow, otherwise - False.
-       If the input is invalid, it prints a message stating that the input is
-       invalid and prompts the user to try again.
-       """
+        Display options for adding or removing items from the user's cart.
+        Args:
+            cart (Cart): The Cart object representing the user's current
+             selections.
+        Returns:
+            bool: True if the user chooses to continue the flow,
+             otherwise - False.
+        The method prompts the user to add or remove items from their cart and
+        handles the corresponding actions. It returns True if the user chooses
+        to continue the flow, otherwise - False.
+        If the input is invalid, it prints a message stating that the input is
+        invalid and prompts the user to try again.
+        """
         result = False
         while True:
             self.print_user_cart(cart)
@@ -161,20 +160,19 @@ class UserflowService:
 
     def __handle_continue_flow(self, cart: Cart):
         """
-       Handle user input to continue or complete the cafeteria flow.
-       Args:
-           cart (Cart): The Cart object representing the user's current
-            selections.
-       Returns:
-           bool: True if the user chooses to continue the flow,
-           otherwise - False.
-       The method prompts the user to indicate whether they are finished with
-       their order or want to continue. It returns True if the user chooses to
-       continue the flow, otherwise - False. If the input is invalid, it prints
-       a message stating that the input is invalid and prompts the user
-       to try again.
-       """
-
+        Handle user input to continue or complete the cafeteria flow.
+        Args:
+            cart (Cart): The Cart object representing the user's current
+             selections.
+        Returns:
+            bool: True if the user chooses to continue the flow,
+             otherwise - False.
+        The method prompts the user to indicate whether they are finished with
+        their order or want to continue. It returns True if the user chooses to
+        continue the flow, otherwise - False. If the input is invalid, it
+        prints a message stating that the input is invalid and prompts the user
+        to try again.
+        """
         result = True
         while True:
             self.print_user_cart(cart)
@@ -196,17 +194,17 @@ class UserflowService:
 
     def __complete_user_flow(self, cart: Cart):
         """
-       Complete the user's cafeteria flow by finalizing the purchase.
-       Args:
-           cart (Cart): The Cart object representing the user's final
-            selections.
-       The method prompts the user to enter the cart total displayed on
-       the screen to complete the purchase. It validates the user input and
-       finalizes the purchase if the input is valid and matches the expected
-       total price. If the input is valid, it prints a thank-you message and
-       concludes the cafeteria flow. Otherwise, it prints a message stating
-       that the input is invalid and prompts the user to try again.
-       """
+        Complete the user's cafeteria flow by finalizing the purchase.
+        Args:
+            cart (Cart): The Cart object representing the user's final
+             selections.
+        The method prompts the user to enter the cart total displayed on
+        the screen to complete the purchase. It validates the user input and
+        finalizes the purchase if the input is valid and matches the expected
+        total price. If the input is valid, it prints a thank-you message and
+        concludes the cafeteria flow. Otherwise, it prints a message stating
+        that the input is invalid and prompts the user to try again.
+        """
         while True:
             formatted_price = (self.price_converter.
                                format_price(cart.TotalPrice))
@@ -236,15 +234,15 @@ class UserflowService:
 
     def print_user_cart(self, cart: Cart):
         """
-       Print the contents of the user's shopping cart.
-       Args:
-           cart (Cart): The Cart object representing the user's current
-            selections.
-       Prints:
-           A formatted table displaying the ID, Name, Price, and Quantity
-           of each item in the user's shopping cart. Additionally, prints the
-           total price of the cart.
-       """
+        Print the contents of the user's shopping cart.
+        Args:
+            cart (Cart): The Cart object representing the user's current
+             selections.
+        Prints:
+            A formatted table displaying the ID, Name, Price, and Quantity
+            of each item in the user's shopping cart. Additionally, prints the
+            total price of the cart.
+        """
         formatted_price = self.price_converter.format_price(cart.TotalPrice)
         headers = ["ID", "Name", "Price", "Quantity"]
         table_items = []
@@ -294,20 +292,20 @@ class UserflowService:
 
     def handle_remove_from_cart(self, cart, cart_items, updated_items):
         """
-       Handle the removal of items from the user's shopping cart.
+        Handle the removal of items from the user's shopping cart.
 
-       Args:
-           cart (Cart): The Cart object representing the user's current
-            selections.
-           cart_items (list[CafeteriaItem]): The list of CafeteriaItems to be
-            removed from the cart.
-           updated_items (list[CafeteriaItem]): The list of updated
-            CafeteriaItems after removal.
-       The method updates the user's cart based on the removal of
-       selected items. If the stock of an item becomes zero, it is removed
-       from the cart, otherwise, the item is updated in the cart with
-       the new stock.
-       """
+        Args:
+            cart (Cart): The Cart object representing the user's current
+             selections.
+            cart_items (list[CafeteriaItem]): The list of CafeteriaItems to be
+             removed from the cart.
+            updated_items (list[CafeteriaItem]): The list of updated
+             CafeteriaItems after removal.
+        The method updates the user's cart based on the removal of
+        selected items. If the stock of an item becomes zero, it is removed
+        from the cart, otherwise, the item is updated in the cart with
+        the new stock.
+        """
         if len(updated_items) == 0:
             self.unique_set.clear()
             cart.Items = updated_items
@@ -348,17 +346,17 @@ class UserflowService:
 
     def __subtract_stock(self, cart_items: list[CafeteriaItem]):
         """
-       Subtract stock from selected items in the menu and update the user's
-       cart.
-       Args:
-           cart_items (list[CafeteriaItem]): The list of CafeteriaItems
-            representing the user's ordered items.
-       Returns:
+        Subtract stock from selected items in the menu and update the user's
+        cart.
+        Args:
+            cart_items (list[CafeteriaItem]): The list of CafeteriaItems
+             representing the user's ordered items.
+        Returns:
            list[CafeteriaItem]: The list of updated CafeteriaItems in the
            user's cart. The method deep copies the menu, subtracts stock from
            selected items based on user input, updates the user's cart
            and returns the updated list of CafeteriaItems in the user's cart.
-       """
+        """
         menu_list_copy = copy.deepcopy(self.menu)
         for item in cart_items:
             menu_item = next((x for x in menu_list_copy if x.Id == item.Id),
@@ -388,17 +386,18 @@ class UserflowService:
 
     def __add_stock(self, cart_items: list[CafeteriaItem]):
         """
-       Add stock back to selected items in the menu and update the user's cart.
-       Args:
-           cart_items (list[CafeteriaItem]): The list of CafeteriaItems to be
-            updated with added stock.
-       Returns:
+        Add stock back to selected items in the menu and update the user's
+        cart.
+        Args:
+            cart_items (list[CafeteriaItem]): The list of CafeteriaItems to be
+             updated with added stock.
+        Returns:
            list[CafeteriaItem]: The list of updated CafeteriaItems in the
            user's cart after adding stock. The method deep copies the menu,
            adds stock back to selected items based on user input, updates the
-           user's cart, and returns the updated list of CafeteriaItems in the
+           user's cart, and returns the updated list of CafeteriaItems in the asdsa
            user's cart.
-       """
+        """
         menu_list_copy = copy.deepcopy(self.menu)
         cart_items_updated = []
         for item in cart_items:

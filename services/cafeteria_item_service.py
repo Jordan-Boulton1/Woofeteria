@@ -8,13 +8,14 @@ from infrastructure.validators.user_input_validator import UserInputValidator
 
 class CafeteriaItemService:
     """
-  Service class for managing cafeteria items and related functionalities.
+    Service class for managing cafeteria items and related functionalities.
 
-  Attributes:
-      cafeteria_items (list[CafeteriaItem]): A list containing cafeteria items.
-      price_converter (PriceConverter): An instance of PriceConverter for
-       handling price-related operations.
-  """
+    Attributes:
+        cafeteria_items (list[CafeteriaItem]): A list containing cafeteria
+         items.
+        price_converter (PriceConverter): An instance of PriceConverter for
+         handling price-related operations.
+    """
     def __init__(self):
         self.cafeteria_items = self.__populate_cafeteria_menu()
         self.price_converter = PriceConverter()
@@ -45,31 +46,31 @@ class CafeteriaItemService:
         Retrieve the current state of the Cafeteria menu.
         Returns:
             list[CafeteriaItem]: The list of CafeteriaItems representing the
-             current menu.
+            current menu.
         This method returns the current state of the Cafeteria menu, which is a
         list of CafeteriaItem objects representing the items available in the
-         menu.
+        menu.
         """
         return self.cafeteria_items
 
     def add_items_to_menu(self, amount_of_items: int,
                           menu: list[CafeteriaItem]):
         """
-       Add new cafeteria items to the menu.
-       Args:
-           amount_of_items (int): The number of new cafeteria items to add.
-           menu (list[CafeteriaItem]): The existing list of CafeteriaItems
-            representing the menu.
-       Returns:
-           list[CafeteriaItem]: The updated menu after adding the new items.
-       This method allows the addition of a specified number of new cafeteria
-       items to the menu. It prompts the user to enter names, quantities,
-       and prices for each new item. The item details are then used to create
-       new `CafeteriaItem` objects, which are added to the menu. The method
-       prints a confirmation message for each added item, including its
-       quantity, name, and price. Finally, it recalculates the IDs of the menu
-       items to ensure they are consecutive.
-       """
+        Add new cafeteria items to the menu.
+        Args:
+            amount_of_items (int): The number of new cafeteria items to add.
+            menu (list[CafeteriaItem]): The existing list of CafeteriaItems
+             representing the menu.
+        Returns:
+            list[CafeteriaItem]: The updated menu after adding the new items.
+        This method allows the addition of a specified number of new cafeteria
+        items to the menu. It prompts the user to enter names, quantities,
+        and prices for each new item. The item details are then used to create
+        new `CafeteriaItem` objects, which are added to the menu. The method
+        prints a confirmation message for each added item, including its
+        quantity, name, and price. Finally, it recalculates the IDs of the menu
+        items to ensure they are consecutive.
+        """
         last_item = self.cafeteria_items[-1]
         input_text = "Please enter a name for the new cafeteria item:\n"
         for i in range(amount_of_items):
@@ -143,11 +144,15 @@ class CafeteriaItemService:
                     print(
                         f"The price of {item.Name} has been changed from "
                         f"£{PriceConverter.format_price(item.Price)} to "
-                        f"£{PriceConverter.format_price(validated_item_price)}")
-                    item = self.__handle_update_value(validated_item_price, item)
+                        f"£{PriceConverter.format_price(validated_item_price)}"
+                    )
+                    item = self.__handle_update_value(validated_item_price,
+                                                      item)
                 else:
                     print(
-                        f"The price of {item.Name} is already {PriceConverter.format_price(item.Price)}. Please, try again.")
+                        f"The price of {item.Name} is already "
+                        f"{PriceConverter.format_price(item.Price)}. "
+                        f"Please, try again.")
                     continue
             else:
                 break
@@ -172,7 +177,8 @@ class CafeteriaItemService:
         """
         while True:
             validated_item_quantity = (UserInputValidator
-                                       .validate_user_input_is_correct_quantity(item.Name, True, is_admin))
+                                       .validate_user_input_is_correct_quantity
+                                       (item.Name, True, is_admin))
             if validated_item_quantity != "Skip":
                 if item.Stock != validated_item_quantity:
                     print(
@@ -184,7 +190,8 @@ class CafeteriaItemService:
                     break
                 else:
                     print(
-                        f"The stock value of {item.Name} is already {item.Stock}. Please, try again.")
+                        f"The stock value of {item.Name} is already "
+                        f"{item.Stock}. Please, try again.")
                     continue
             else:
                 break
@@ -192,20 +199,20 @@ class CafeteriaItemService:
 
     def __update_item_name(self, item, menu):
         """
-       Update the name of a cafeteria item.
-       Args:
-           item (CafeteriaItem): The cafeteria item to update.
-           menu (list[CafeteriaItem]): The list of CafeteriaItems representing
-            the menu.
-       Returns:
-           CafeteriaItem: The updated cafeteria item.
-       This method prompts the user for a new name for the specified cafeteria
-       item. It uses the UserInputValidator to ensure the entered name
-       is valid. If a valid name is provided (not equal to "Skip"),
-       it prints a message indicating the change. If the new name is different
-       from the current name, it updates the item's name. The updated cafeteria
-       item is then returned.
-       """
+        Update the name of a cafeteria item.
+        Args:
+            item (CafeteriaItem): The cafeteria item to update.
+            menu (list[CafeteriaItem]): The list of CafeteriaItems representing
+             the menu.
+        Returns:
+            CafeteriaItem: The updated cafeteria item.
+        This method prompts the user for a new name for the specified cafeteria
+        item. It uses the UserInputValidator to ensure the entered name
+        is valid. If a valid name is provided (not equal to "Skip"),
+        it prints a message indicating the change. If the new name is different
+        from the current name, it updates the item's name. The updated
+        cafeteria item is then returned.
+        """
         input_text = (f"Please enter a new name for {item.Name} "
                       f"or type "
                       f"'{Style.BRIGHT}Skip{Style.RESET_ALL}' "
@@ -265,18 +272,21 @@ class CafeteriaItemService:
     def add_to_stock(self, ordered_item: CafeteriaItem,
                      menu_list: list[CafeteriaItem], ordered_amount: int):
         """
-       Subtract the ordered amount from the stock of the specified cafeteria
-       item.
-       Args:
-           ordered_item (CafeteriaItem): The cafeteria item for which to
-            subtract stock.
-           menu_list (list[CafeteriaItem]): The list of cafeteria items
-            representing the menu.
-           ordered_amount (int): The quantity to subtract from the stock.
-       This method updates the stock quantity of the specified cafeteria item
-       in the menu_list by subtracting the ordered_amount.
-       The modified menu_list is then assigned to the cafeteria_items.
-       """
+        Add stock to the specified cafeteria item in the menu.
+
+        Args:
+            ordered_item (CafeteriaItem): The cafeteria item for which stock is
+             to be added.
+            menu_list (list[CafeteriaItem]): The list representing the
+             cafeteria menu.
+            ordered_amount (int): The quantity of stock to be added to the
+             ordered item.
+
+        This method iterates through the menu list to find the cafeteria item
+        with the specified ID (ordered_item.Id) and then increases its stock by
+        the ordered_amount. The updated menu list is then assigned to
+        self.cafeteria_items.
+        """
         for cafeteria_item in menu_list:
             if ordered_item.Id == cafeteria_item.Id:
                 cafeteria_item.Stock += ordered_amount
