@@ -401,3 +401,35 @@ You can fork this repository by using the following steps:
 1. Log in to GitHub and locate the [GitHub Repository](https://github.com/Jordan-Boulton1/woofeteria)
 2. At the top of the Repository (not top of page) just above the "Settings" Button on the menu, locate the "Fork" Button.
 3. Once clicked, you should now have a copy of the original repository in your own GitHub account!
+
+## Credits
+
+### Content
+
+| Source | Location | Notes |
+| --- | --- | --- |
+| [Markdown Builder](https://tim.2bn.dev/markdown-builder) | README and TESTING | tool to help generate the Markdown files |
+| [Python Docs](https://docs.python.org/3/library/enum.html) | PP3 terminal  | Working with enums |
+| [Medium](https://medium.com/analytics-vidhya/how-to-print-emojis-using-python-2e4f93443f7e) | PP3 terminal  | How to print emojis in python |
+| [StackOverflow](https://stackoverflow.com/questions/6612775/how-to-make-a-copy-of-a-list-of-objects-not-change-when-modifying-the-original-l) | PP3 terminal  | Used when creating a deepcopy of the menu |
+| [StackOverflow](https://stackoverflow.com/questions/3477502/pythonic-method-to-parse-a-string-of-comma-separated-integers-into-a-list-of-i) | PP3 terminal  | Used to parse comma separated integers into a list of integers |
+| [StackOverflow](https://stackoverflow.com/questions/76573942/how-to-filter-a-list-of-objects-by-a-list-of-ids) | PP3 terminal  | Used to find items in a list by their ID |
+| [w3schools](https://www.w3schools.com/python/ref_func_next.asp) | PP3 terminal  | Used for understanding how to use the `next` function |
+| [YouTube](https://www.youtube.com/watch?v=u51Zjlnui4Y) | PP3 terminal | tutorial for adding color to the Python terminal |
+| [YouTube](https://www.youtube.com/watch?v=Smf68icE_as) | PP3 terminal | tutorial for adding tables to format text in python terminal |
+| [geeksforgeeks](https://www.geeksforgeeks.org/read-json-file-using-python/) | PP3 terminal | Used for reading json files in python |
+
+
+### Media
+
+| Source | Location | Type | Notes |
+| --- | --- | --- | --- |
+| [Compart](https://www.compart.com/en/unicode/U+1F436) | PP3 terminal  | emoji | Unicode for dog emoji |
+| [Compart](https://www.compart.com/en/unicode/U+1F43E) | PP3 terminal  | emoji | Unicode for Paw Print emoji |
+
+### Acknowledgements
+
+- I would like to thank my Code Institute mentor, [Tim Nelson](https://github.com/TravelTimN) for their support throughout the development of this project.
+- I would like to thank the [Code Institute](https://codeinstitute.net) tutor team for their assistance with troubleshooting and debugging some project issues.
+- I would like to thank the [Code Institute Slack community](https://code-institute-room.slack.com) for the moral support; it kept me going during periods of self doubt and imposter syndrome.
+- I would like to thank my partner (Stefani), for believing in me, and allowing me to make this transition into software development.
