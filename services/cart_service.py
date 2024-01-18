@@ -7,6 +7,12 @@ from infrastructure.helpers.price_converter import PriceConverter
 
 @dataclass
 class CartService:
+    """
+        Service class for managing the shopping cart.
+        Attributes:
+        price_converter (PriceConverter): An instance of the PriceConverter c
+        lass for handling price formatting.
+    """
     def __init__(self):
         self.price_converter = PriceConverter()
 
@@ -15,7 +21,7 @@ class CartService:
         Create a new Cart object with the provided list of CafeteriaItems.
         Args:
             selected_items (list[CafeteriaItem]): A list of CafeteriaItems to
-            be added to the cart.
+             be added to the cart.
         Returns:
             Cart: A new Cart object initialized with the provided
             selected_items, total quantity, and total price calculated from
@@ -33,7 +39,7 @@ class CartService:
        Args:
            cart (Cart): The Cart object to be updated.
            selected_items (list[CafeteriaItem]): A list of CafeteriaItems
-           to be added to the cart.
+            to be added to the cart.
        Returns:
            Cart: The updated Cart object containing the total price,
            total quantity, and a sorted list of selected CafeteriaItems
@@ -51,7 +57,7 @@ class CartService:
         Args:
             cart (Cart): The Cart object from which the item will be removed.
             item_id (int): The ID of the CafeteriaItem to be removed from the
-            cart.
+             cart.
         Returns:
             Cart: The updated Cart object after removing the specified
             CafeteriaItem.
@@ -84,7 +90,7 @@ class CartService:
         their stock quantities.
         Args:
            selected_items (list[CafeteriaItem]): A list of CafeteriaItems for
-           which to calculate the total quantity.
+            which to calculate the total quantity.
        Returns:
            int: The total quantity calculated by summing the individual stock
            quantities of each item in the selected_items list.
@@ -97,7 +103,7 @@ class CartService:
        prices and quantities.
        Args:
            selected_items (list[CafeteriaItem]): A list of CafeteriaItems for
-           which to calculate the total price.
+            which to calculate the total price.
        Returns:
            float: The total price calculated by summing the individual total
            prices of each item (price multiplied by quantity) in the
