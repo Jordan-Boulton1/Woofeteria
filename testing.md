@@ -108,4 +108,4 @@ Defensive programming was manually tested with the below user acceptance testing
 
     - Attempted fix: As the terminal was not made by me, I was unsure how to fix this bug.
 
-There are no remaining bugs that I am aware of.
+Apart from that there are no other bugs that I am aware of.
