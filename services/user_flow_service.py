@@ -395,7 +395,7 @@ class UserflowService:
            list[CafeteriaItem]: The list of updated CafeteriaItems in the
            user's cart after adding stock. The method deep copies the menu,
            adds stock back to selected items based on user input, updates the
-           user's cart, and returns the updated list of CafeteriaItems in the asdsa
+           user's cart, and returns the updated list of CafeteriaItems in the
            user's cart.
         """
         menu_list_copy = copy.deepcopy(self.menu)
