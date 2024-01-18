@@ -10,8 +10,8 @@ class CartService:
     """
         Service class for managing the shopping cart.
         Attributes:
-        price_converter (PriceConverter): An instance of the PriceConverter c
-        lass for handling price formatting.
+        price_converter (PriceConverter): An instance of the PriceConverter
+        class for handling price formatting.
     """
     def __init__(self):
         self.price_converter = PriceConverter()
