@@ -37,7 +37,7 @@ I've tested my deployed project on multiple browsers to check for compatibility 
 
 Defensive programming was manually tested with the below user acceptance testing:
 
-**Note - some images have been taken from the local terminal, this was due to the fact that I could fit more validation into one screenshot. However all validation has been tested in the Code Institute teminal.**
+**Note - some images have been taken from the local terminal, this was due to the fact that I could fit more validation into one screenshot. However, all validation has been tested in the Code Institute terminal.**
 
 | Feature | Expectation | Test | Result | Fix | Screenshot |
 | --- | --- | --- | --- | --- | --- |

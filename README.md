@@ -37,7 +37,7 @@ Woofeteria is a cafe built especially for your fluffy four-legged dog buddies. W
 
 - **Add or Remove**
     - If the user selects (**Add**), they will be taken through the process of adding an item from the menu again.
-    - If the user selects (**Remove**), they will be prompted with a message, which gives the user clear instructions on how to remove an item(s). When the user removes an item, the will be notified which item has been removed from their cart, and the quantity that they chose to remove.
+    - If the user selects (**Remove**), they will be prompted with a message, which gives the user clear instructions on how to remove an item(s). When the user removes an item, they will be notified which item has been removed from their cart, and the quantity that they chose to remove.
 
 ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/features/userflow/is-user-finished-no.png)
 
@@ -230,7 +230,7 @@ class AdminService:
         self.menu = self.cafeteria_item_service.get_cafeteria_menu()
 ```
 
-- **Infrastructure**: A layer that is constructed of generic helpers and domain types that support the business layer (**Services**). The **Infrastructure** layer is constructed by 3 additional layers that clearly segragate the helpers and domain types by the resopnsibilities they provide - **Helpers**, **Validators** and **Enums**:
+- **Infrastructure**: A layer that is constructed of generic helpers and domain types that support the business layer (**Services**). The **Infrastructure** layer is constructed by 3 additional layers that clearly segregate the helpers and domain types by the responsibilities they provide - **Helpers**, **Validators** and **Enums**:
     - **Helpers**:
         ```python
        class ColorHelper:
@@ -478,5 +478,5 @@ You can fork this repository by using the following steps:
 
 - I would like to thank my Code Institute mentor, [Tim Nelson](https://github.com/TravelTimN) for their support throughout the development of this project.
 - I would like to thank the [Code Institute](https://codeinstitute.net) tutor team for their assistance with troubleshooting and debugging some project issues.
-- I would like to thank the [Code Institute Slack community](https://code-institute-room.slack.com) for the moral support; it kept me going during periods of self doubt and imposter syndrome.
+- I would like to thank the [Code Institute Slack community](https://code-institute-room.slack.com) for the moral support; it kept me going during periods of self-doubt and imposter syndrome.
 - I would like to thank my partner (Stefani), for believing in me, and allowing me to make this transition into software development.
