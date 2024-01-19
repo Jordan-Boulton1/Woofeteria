@@ -113,11 +113,11 @@ It also helped with milestone iterations on a weekly basis.
 
 ### Flowchart
 
-To follow best practice, a flowchart was created for the app's logic,
+To follow best practice, two flowcharts were created for the app's logic,
 and mapped out before coding began using a free version of
 [Draw.io](https://www.draw.io).
 
-Below is the flowchart of the main process of this Python program. It shows the entire cycle of the program.
+Below is the flowchart of the main process and the admin process of this Python program. It shows the entire cycle of the program.
 
 #### Regular User Flow
 ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/data%20model/flowchart.drawio.png)
