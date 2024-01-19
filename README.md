@@ -91,14 +91,13 @@ Upon successfully entering the correct password, the user will have full access 
 [GitHub Projects](https://github.com/Jordan-Boulton1/woofeteria/projects) served as an Agile tool for this project.
 It isn't a specialized tool, but with the right tags and project creation/issue assignments, it can be made to work.
 
-Through it,  issues, and milestone tasks were planned, then tracked on a weekly basis using the basic Kanban board.
+Through it, issues, and milestone tasks were planned, then tracked on a weekly basis using the basic Kanban board.
 
 ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/pp3-project-board.png)
 
 ### GitHub Issues
 
-[GitHub Issues](https://github.com/Jordan-Boulton1/woofeteria/issues) served as an another Agile tool.
-There, I used my own **User Story Template** to manage user stories.
+[GitHub Issues](https://github.com/Jordan-Boulton1/woofeteria/issues) served as another Agile tool.
 
 It also helped with milestone iterations on a weekly basis.
 
@@ -109,6 +108,20 @@ It also helped with milestone iterations on a weekly basis.
 - [Closed Issues](https://github.com/Jordan-Boulton1/woofeteria/issues?q=is%3Aissue+is%3Aclosed)
 
     ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/pp3-closed-issues.png)
+
+## Data Model
+
+### Flowchart
+
+To follow best practice, a flowchart was created for the app's logic,
+and mapped out before coding began using a free version of
+[Draw.io](https://www.draw.io).
+
+Below is the flowchart of the main process of this Python program. It shows the entire cycle of the program.
+
+#### Regular User Flow
+![screenshot](documentation/flowchart.png)
+
 
 ### Classes & Functions
 
