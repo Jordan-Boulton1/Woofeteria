@@ -100,12 +100,16 @@ Defensive programming was manually tested with the below user acceptance testing
 
     - To fix this, I removed a piece of code that was taking the user input and storing it as the Stock value.
 
-## Unfixed Bugs
+## Known Issues
 
 - When you run the terminal on the firefox web browser, only half of the emojis load.
 
     ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/testing/bugs/firefox-emoji-bug.png)
 
-    - Attempted fix: As the terminal was not made by me, I was unsure how to fix this bug.
+    - Attempted fix: As the terminal was not made by me, I was unsure how to fix this issue.
 
-Apart from that there are no other bugs that I am aware of.
+- When two or more people try to run the program at the same time, it only allows one person to actually use the program due to the Heroku Subscription type.
+
+  - Attempted fix: As I was given the subscription free of charge from [Code Institute](https://codeinstitute.net/) I was unable to find a fix for this issue.
+
+Apart from that there are no other bugs or issues that I am aware of.
