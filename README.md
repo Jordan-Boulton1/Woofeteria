@@ -120,7 +120,10 @@ and mapped out before coding began using a free version of
 Below is the flowchart of the main process of this Python program. It shows the entire cycle of the program.
 
 #### Regular User Flow
-![screenshot](documentation/flowchart.png)
+![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/data%20model/flowchart.drawio.png)
+
+#### Admin Flow
+![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/data%20model/adminflow.drawio.png)
 
 
 ### Classes & Functions
