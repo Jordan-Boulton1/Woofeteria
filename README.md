@@ -86,6 +86,30 @@ Upon successfully entering the correct password, the user will have full access 
 - [Heroku](https://www.heroku.com) used for hosting the deployed back-end site.
 - [Regex101](https://regex101.com/) used to build regex expressions
 
+### GitHub Projects
+
+[GitHub Projects](https://github.com/Jordan-Boulton1/woofeteria/projects) served as an Agile tool for this project.
+It isn't a specialized tool, but with the right tags and project creation/issue assignments, it can be made to work.
+
+Through it,  issues, and milestone tasks were planned, then tracked on a weekly basis using the basic Kanban board.
+
+![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/pp3-project-board.png)
+
+### GitHub Issues
+
+[GitHub Issues](https://github.com/Jordan-Boulton1/woofeteria/issues) served as an another Agile tool.
+There, I used my own **User Story Template** to manage user stories.
+
+It also helped with milestone iterations on a weekly basis.
+
+- [Open Issues](https://github.com/Jordan-Boulton1/woofeteria/issues)
+
+    ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/pp3-open-issues.png)
+
+- [Closed Issues](https://github.com/Jordan-Boulton1/woofeteria/issues?q=is%3Aissue+is%3Aclosed)
+
+    ![screenshot](https://github.com/Jordan-Boulton1/woofeteria/blob/main/documentation/pp3-closed-issues.png)
+
 ### Classes & Functions
 
 In addition to the layers that came with the template from Code Institute **Controllers** and **Views**, there were 3 additional layers that were added to achieve a clean and structured code -
